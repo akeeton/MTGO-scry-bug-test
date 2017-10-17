@@ -70,21 +70,52 @@
 <h2>MTGO-scry-bug-test.sikuli</h2> <a href="MTGO-scry-bug-test.zip">(Download this script)</a>
 </div>
 <pre class="sikuli-code">
-<span class="skw">click</span>(<img src="1508223092723.png" />)
+<span class="kw">import</span> time
 
-<span class="skw">wait</span>(<img src="1508222046889.png" />, <span class="dig">5</span>)
+region_play = Region(<span class="dig">7</span>,<span class="dig">965</span>,<span class="dig">334</span>,<span class="dig">57</span>)
+region_mulligan_keep = Region(<span class="dig">0</span>,<span class="dig">13</span>,<span class="dig">175</span>,<span class="dig">154</span>)
+region_temporary_zone = Region(<span class="dig">1150</span>,<span class="dig">195</span>,<span class="dig">130</span>,<span class="dig">37</span>)
+region_put_on_the_bottom_of_your_library = Region(<span class="dig">921</span>,<span class="dig">181</span>,<span class="dig">459</span>,<span class="dig">166</span>)
+region_on_the_bottom_of_the_library = Region(<span class="dig">1726</span>,<span class="dig">664</span>,<span class="dig">180</span>,<span class="dig">37</span>)
+region_concede_match_button = Region(<span class="dig">891</span>,<span class="dig">554</span>,<span class="dig">133</span>,<span class="dig">48</span>)
 
-<span class="skw">click</span>(<img src="1508222069014.png" />)
+iterations = <span class="dig">0</span>
+hits = <span class="dig">0</span>
 
-<span class="skw">wait</span>(<img src="1508223167943.png" />, <span class="dig">5</span>)
+<span class="kw">while</span> True:
+    region_play.<span class="skw">wait</span>(<img src="1508227924297.png" />, <span class="dig">5</span>)
+    region_play.<span class="skw">click</span>(<img src="1508227924297.png" />)
 
-<span class="skw">click</span>(<img src="1508222123880.png" />)
+    <span class="kw">for</span> i <span class="kw">in</span> range(<span class="dig">0</span>, <span class="dig">7</span>):
+        region_mulligan_keep.<span class="skw">wait</span>(<img src="1508227031905.png" />, <span class="dig">5</span>)
+        region_mulligan_keep.<span class="skw">click</span>(<img src="1508228072640.png" />)
+        time.<span class="skw">sleep</span>(<span class="dig">0.2</span>)
 
-<span class="skw">wait</span>(<img src="1508222653397.png" />, <span class="dig">5</span>)
+    region_temporary_zone.<span class="skw">wait</span>(<img src="1508222653397.png" />, <span class="dig">5</span>)
 
-<span class="skw">click</span>(Location(<span class="dig">1261</span>, <span class="dig">356</span>))
+    card_sent_to_bottom = <span class="skw">capture</span>(Region(<span class="dig">1202</span>,<span class="dig">271</span>,<span class="dig">118</span>,<span class="dig">159</span>))
 
-<span class="skw">click</span>(<img src="scry-to-bottom.png" />)
+    <span class="skw">click</span>(Location(<span class="dig">1207</span>, <span class="dig">271</span>))
+
+    region_put_on_the_bottom_of_your_library.<span class="skw">click</span>(<img src="scry-to-bottom.png" />)
+
+    region_on_the_bottom_of_the_library.<span class="skw">wait</span>(<img src="1508225941575.png" />, <span class="dig">5</span>)
+
+    time.<span class="skw">sleep</span>(<span class="dig">0.2</span>)
+
+    drawn_card_region = Region(Region(<span class="dig">169</span>,<span class="dig">735</span>,<span class="dig">224</span>,<span class="dig">299</span>))
+
+    <span class="kw">if</span> drawn_card_region.exists(card_sent_to_bottom):
+        hits += <span class="dig">1</span>
+
+    iterations += <span class="dig">1</span>
+    <span class="kw">print</span> hits, <span class="str">"/"</span>, iterations
+    <span class="kw">print</span> card_sent_to_bottom
+
+    <span class="skw">click</span>(Location(<span class="dig">1903</span>, <span class="dig">13</span>))
+
+    region_concede_match_button.<span class="skw">wait</span>(<img src="1508227869176.png" />, <span class="dig">5</span>)
+    region_concede_match_button.<span class="skw">click</span>(<img src="1508227869176.png" />)
 </pre>
 </body>
 </html>
