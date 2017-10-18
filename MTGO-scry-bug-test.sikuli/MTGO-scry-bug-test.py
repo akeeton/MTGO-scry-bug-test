@@ -10,7 +10,8 @@ region_put_on_the_bottom_of_your_library = Region(921,181,459,166)
 region_on_the_bottom_of_the_library = Region(1726,664,180,37)
 region_concede_match_button = Region(891,554,133,48)
 
-TEMP_PATH = tempfile.mkdtemp()
+TEMP_DIR_PREFIX = time.strftime("MTGO-scry-bug_%Y-%m-%d_%H-%M-%S", time.gmtime())
+TEMP_PATH = tempfile.mkdtemp(prefix=TEMP_DIR_PREFIX)
 print "TEMP_PATH:", TEMP_PATH
 
 OUTPUT_PATH = os.path.join(TEMP_PATH, 'output')
@@ -48,7 +49,7 @@ while True:
     
     region_put_on_the_bottom_of_your_library.click("scry-to-bottom.png")
 
-    region_on_the_bottom_of_the_library.wait("1508225941575.png", 5)
+    region_on_the_bottom_of_the_library.wait("1508335404323.png", 5)
 
     time.sleep(0.2)
     

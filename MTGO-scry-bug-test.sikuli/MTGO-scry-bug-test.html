@@ -82,7 +82,8 @@ region_put_on_the_bottom_of_your_library = Region(<span class="dig">921</span>,<
 region_on_the_bottom_of_the_library = Region(<span class="dig">1726</span>,<span class="dig">664</span>,<span class="dig">180</span>,<span class="dig">37</span>)
 region_concede_match_button = Region(<span class="dig">891</span>,<span class="dig">554</span>,<span class="dig">133</span>,<span class="dig">48</span>)
 
-TEMP_PATH = tempfile.mkdtemp()
+TEMP_DIR_PREFIX = time.strftime(<span class="str">"MTGO-scry-bug_%Y-%m-%d_%H-%M-%S"</span>, time.gmtime())
+TEMP_PATH = tempfile.mkdtemp(prefix=TEMP_DIR_PREFIX)
 <span class="kw">print</span> <span class="str">"TEMP_PATH:"</span>, TEMP_PATH
 
 OUTPUT_PATH = os.path.join(TEMP_PATH, <span class="str">'output'</span>)
@@ -120,7 +121,7 @@ hits = <span class="dig">0</span>
 
     region_put_on_the_bottom_of_your_library.<span class="skw">click</span>(<img src="scry-to-bottom.png" />)
 
-    region_on_the_bottom_of_the_library.<span class="skw">wait</span>(<img src="1508225941575.png" />, <span class="dig">5</span>)
+    region_on_the_bottom_of_the_library.<span class="skw">wait</span>(<img src="1508335404323.png" />, <span class="dig">5</span>)
 
     time.<span class="skw">sleep</span>(<span class="dig">0.2</span>)
 
