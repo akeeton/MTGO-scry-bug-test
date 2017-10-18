@@ -44,18 +44,17 @@ while True:
     
     region_temporary_zone.wait("1508222653397.png", 5)
     time.sleep(0.1)    
-    card_sent_to_bottom = capture(Region(1202,271,118,159))
+    card_sent_to_bottom = capture(Region(1209,283,102,63))
     
-    click(Location(1242, 379))
+    click(Location(1242, 379)) # Click on the top card of the library.
 
     time.sleep(0.5)
-    #region_put_on_the_bottom_of_your_library.wait("scry-to-bottom.png", 5)
-    region_put_on_the_bottom_of_your_library.click(Location(1139, 424))
+    region_put_on_the_bottom_of_your_library.click(Location(1139, 424)) # Click on "Put on the bottom of your library."
 
     region_on_the_bottom_of_the_library.wait("1508335404323.png", 5)
     time.sleep(0.5)
-    card_drawn_region = Region(Region(169,735,224,299))
-
+    
+    card_drawn_region = Region(Region(203,780,155,115))
     card_drawn = capture(card_drawn_region)
 
     copy_path = ""
@@ -72,8 +71,9 @@ while True:
     shutil.move(card_sent_to_bottom, os.path.join(copy_path, str(iterations) + "_bottom.png"))
     shutil.move(card_drawn, os.path.join(copy_path, str(iterations) + "_drawn.png"))
 
-    click(Location(1903, 13))
+    click(Location(1903, 13)) # Click on the "X" (close) button.
 
     region_concede_match_button.wait("1508227869176.png", 5)
+    time.sleep(0.5)
     region_concede_match_button.click("1508227869176.png")
     
