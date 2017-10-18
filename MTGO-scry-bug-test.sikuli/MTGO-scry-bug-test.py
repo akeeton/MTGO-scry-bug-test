@@ -34,25 +34,26 @@ hits = 0
 
 while True:
     region_play.wait("1508227924297.png", 5)
-    region_play.click("1508227924297.png")
-    
+    region_play.click(Location(164, 993))
+
+    region_mulligan_keep.wait("1508342097962.png", 5)
     for i in range(0, 7):
-        region_mulligan_keep.wait("1508227031905.png", 5)
-        region_mulligan_keep.click("1508228072640.png")
-        time.sleep(0.2)
+        region_mulligan_keep.wait("mulligan-keep.png", 5)
+        time.sleep(0.5)
+        region_mulligan_keep.click(Location(47, 142))
     
     region_temporary_zone.wait("1508222653397.png", 5)
-    
+    time.sleep(0.1)    
     card_sent_to_bottom = capture(Region(1202,271,118,159))
     
-    click(Location(1207, 271))
-    
-    region_put_on_the_bottom_of_your_library.click("scry-to-bottom.png")
+    click(Location(1242, 379))
+
+    time.sleep(0.5)
+    #region_put_on_the_bottom_of_your_library.wait("scry-to-bottom.png", 5)
+    region_put_on_the_bottom_of_your_library.click(Location(1139, 424))
 
     region_on_the_bottom_of_the_library.wait("1508335404323.png", 5)
-
-    time.sleep(0.2)
-    
+    time.sleep(0.5)
     card_drawn_region = Region(Region(169,735,224,299))
 
     card_drawn = capture(card_drawn_region)

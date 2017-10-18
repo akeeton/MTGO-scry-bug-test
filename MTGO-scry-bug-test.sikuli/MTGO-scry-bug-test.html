@@ -106,25 +106,26 @@ hits = <span class="dig">0</span>
 
 <span class="kw">while</span> True:
     region_play.<span class="skw">wait</span>(<img src="1508227924297.png" />, <span class="dig">5</span>)
-    region_play.<span class="skw">click</span>(<img src="1508227924297.png" />)
+    region_play.<span class="skw">click</span>(Location(<span class="dig">164</span>, <span class="dig">993</span>))
 
+    region_mulligan_keep.<span class="skw">wait</span>(<img src="1508342097962.png" />, <span class="dig">5</span>)
     <span class="kw">for</span> i <span class="kw">in</span> range(<span class="dig">0</span>, <span class="dig">7</span>):
-        region_mulligan_keep.<span class="skw">wait</span>(<img src="1508227031905.png" />, <span class="dig">5</span>)
-        region_mulligan_keep.<span class="skw">click</span>(<img src="1508228072640.png" />)
-        time.<span class="skw">sleep</span>(<span class="dig">0.2</span>)
+        region_mulligan_keep.<span class="skw">wait</span>(<img src="mulligan-keep.png" />, <span class="dig">5</span>)
+        time.<span class="skw">sleep</span>(<span class="dig">0.5</span>)
+        region_mulligan_keep.<span class="skw">click</span>(Location(<span class="dig">47</span>, <span class="dig">142</span>))
 
     region_temporary_zone.<span class="skw">wait</span>(<img src="1508222653397.png" />, <span class="dig">5</span>)
-
+    time.<span class="skw">sleep</span>(<span class="dig">0.1</span>)
     card_sent_to_bottom = <span class="skw">capture</span>(Region(<span class="dig">1202</span>,<span class="dig">271</span>,<span class="dig">118</span>,<span class="dig">159</span>))
 
-    <span class="skw">click</span>(Location(<span class="dig">1207</span>, <span class="dig">271</span>))
+    <span class="skw">click</span>(Location(<span class="dig">1242</span>, <span class="dig">379</span>))
 
-    region_put_on_the_bottom_of_your_library.<span class="skw">click</span>(<img src="scry-to-bottom.png" />)
+    time.<span class="skw">sleep</span>(<span class="dig">0.5</span>)
+    <span class="cmt">#region_put_on_the_bottom_of_your_library.wait("scry-to-bottom.png", 5)</span>
+    region_put_on_the_bottom_of_your_library.<span class="skw">click</span>(Location(<span class="dig">1139</span>, <span class="dig">424</span>))
 
     region_on_the_bottom_of_the_library.<span class="skw">wait</span>(<img src="1508335404323.png" />, <span class="dig">5</span>)
-
-    time.<span class="skw">sleep</span>(<span class="dig">0.2</span>)
-
+    time.<span class="skw">sleep</span>(<span class="dig">0.5</span>)
     card_drawn_region = Region(Region(<span class="dig">169</span>,<span class="dig">735</span>,<span class="dig">224</span>,<span class="dig">299</span>))
 
     card_drawn = <span class="skw">capture</span>(card_drawn_region)
