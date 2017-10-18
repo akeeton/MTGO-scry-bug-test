@@ -139,8 +139,8 @@ hits = <span class="dig">0</span>
     iterations += <span class="dig">1</span>
     <span class="kw">print</span> hits, <span class="str">"/"</span>, iterations
 
-    shutil.copyfile(card_sent_to_bottom, os.path.join(copy_path, str(iterations) + <img src="_bottom.png" />))
-    shutil.copyfile(card_drawn, os.path.join(copy_path, str(iterations) + <img src="_drawn.png" />))
+    shutil.move(card_sent_to_bottom, os.path.join(copy_path, str(iterations) + <img src="_bottom.png" />))
+    shutil.move(card_drawn, os.path.join(copy_path, str(iterations) + <img src="_drawn.png" />))
 
     <span class="skw">click</span>(Location(<span class="dig">1903</span>, <span class="dig">13</span>))
 

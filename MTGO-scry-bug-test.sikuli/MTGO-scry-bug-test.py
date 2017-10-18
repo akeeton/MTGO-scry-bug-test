@@ -67,8 +67,8 @@ while True:
     iterations += 1
     print hits, "/", iterations
 
-    shutil.copyfile(card_sent_to_bottom, os.path.join(copy_path, str(iterations) + "_bottom.png"))
-    shutil.copyfile(card_drawn, os.path.join(copy_path, str(iterations) + "_drawn.png"))
+    shutil.move(card_sent_to_bottom, os.path.join(copy_path, str(iterations) + "_bottom.png"))
+    shutil.move(card_drawn, os.path.join(copy_path, str(iterations) + "_drawn.png"))
 
     click(Location(1903, 13))
 
