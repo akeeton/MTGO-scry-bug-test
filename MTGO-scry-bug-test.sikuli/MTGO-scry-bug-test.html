@@ -70,6 +70,9 @@
 <h2>MTGO-scry-bug-test.sikuli</h2> <a href="MTGO-scry-bug-test.zip">(Download this script)</a>
 </div>
 <pre class="sikuli-code">
+<span class="kw">import</span> os
+<span class="kw">import</span> shutil
+<span class="kw">import</span> tempfile
 <span class="kw">import</span> time
 
 region_play = Region(<span class="dig">7</span>,<span class="dig">965</span>,<span class="dig">334</span>,<span class="dig">57</span>)
@@ -78,6 +81,24 @@ region_temporary_zone = Region(<span class="dig">1150</span>,<span class="dig">1
 region_put_on_the_bottom_of_your_library = Region(<span class="dig">921</span>,<span class="dig">181</span>,<span class="dig">459</span>,<span class="dig">166</span>)
 region_on_the_bottom_of_the_library = Region(<span class="dig">1726</span>,<span class="dig">664</span>,<span class="dig">180</span>,<span class="dig">37</span>)
 region_concede_match_button = Region(<span class="dig">891</span>,<span class="dig">554</span>,<span class="dig">133</span>,<span class="dig">48</span>)
+
+TEMP_PATH = tempfile.mkdtemp()
+<span class="kw">print</span> <span class="str">"TEMP_PATH:"</span>, TEMP_PATH
+
+OUTPUT_PATH = os.path.join(TEMP_PATH, <span class="str">'output'</span>)
+<span class="kw">print</span> <span class="str">"OUTPUT_PATH:"</span>, OUTPUT_PATH
+
+HITS_DIR = <span class="str">'hits'</span>
+HITS_PATH = os.path.join(OUTPUT_PATH, HITS_DIR)
+<span class="kw">print</span> <span class="str">"HITS_PATH:"</span>, HITS_PATH
+
+MISSES_DIR = <span class="str">'misses'</span>
+MISSES_PATH = os.path.join(OUTPUT_PATH, MISSES_DIR)
+<span class="kw">print</span> <span class="str">"MISSES_PATH:"</span>, MISSES_PATH
+
+os.mkdir(OUTPUT_PATH)
+os.mkdir(HITS_PATH)
+os.mkdir(MISSES_PATH)
 
 iterations = <span class="dig">0</span>
 hits = <span class="dig">0</span>
@@ -103,14 +124,23 @@ hits = <span class="dig">0</span>
 
     time.<span class="skw">sleep</span>(<span class="dig">0.2</span>)
 
-    drawn_card_region = Region(Region(<span class="dig">169</span>,<span class="dig">735</span>,<span class="dig">224</span>,<span class="dig">299</span>))
+    card_drawn_region = Region(Region(<span class="dig">169</span>,<span class="dig">735</span>,<span class="dig">224</span>,<span class="dig">299</span>))
 
-    <span class="kw">if</span> drawn_card_region.exists(card_sent_to_bottom):
+    card_drawn = <span class="skw">capture</span>(card_drawn_region)
+
+    copy_path = <span class="str">""</span>
+
+    <span class="kw">if</span> card_drawn_region.exists(card_sent_to_bottom):
         hits += <span class="dig">1</span>
+        copy_path = HITS_PATH
+    <span class="kw">else</span>:
+        copy_path = MISSES_PATH
 
     iterations += <span class="dig">1</span>
     <span class="kw">print</span> hits, <span class="str">"/"</span>, iterations
-    <span class="kw">print</span> card_sent_to_bottom
+
+    shutil.copyfile(card_sent_to_bottom, os.path.join(copy_path, str(iterations) + <img src="_bottom.png" />))
+    shutil.copyfile(card_drawn, os.path.join(copy_path, str(iterations) + <img src="_drawn.png" />))
 
     <span class="skw">click</span>(Location(<span class="dig">1903</span>, <span class="dig">13</span>))
 
