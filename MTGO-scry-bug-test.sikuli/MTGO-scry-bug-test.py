@@ -21,6 +21,10 @@ LOCATION_FIRST_CARD_IN_HAND                         = Location(282, 910)
 LOCATION_X_CLOSE                                    = Location(1902, 14)
 LOCATION_CONCEDE_MATCH                              = Location(961, 579)
 
+class MyDict(dict):
+    def __missing__(self, key):
+        return 0
+
 def hash_file(file_path):
     hasher = hashlib.md5()
     with open(file_path, 'rb') as opened_file:
@@ -51,10 +55,15 @@ def main():
 
     iterations = 0
     hits = 0
+    card_hash_to_times_card_sent_to_bottom = MyDict()
+    card_hash_to_times_card_drawn          = MyDict()
+    card_hash_to_capture                   = {}
 
     while True:
         REGION_PLAY.wait("play.png")
         REGION_PLAY.click(LOCATION_PLAY)
+
+        time.sleep(0.5)
 
         REGION_MULLIGAN_KEEP.wait("mulligan_keep.png")
         for i in range(0, 7):
@@ -82,9 +91,6 @@ def main():
         card_sent_to_bottom_hash = hash_file(card_sent_to_bottom_capture)
         card_drawn_hash          = hash_file(card_drawn_capture)
 
-        print "card_sent_to_bottom_hash", card_sent_to_bottom_hash
-        print "card_drawn_hash", card_drawn_hash
-
         if card_sent_to_bottom_hash == card_drawn_hash:
             hits += 1
             copy_path = HITS_PATH
@@ -94,8 +100,22 @@ def main():
         iterations += 1
         print hits, "/", iterations
 
-        shutil.move(card_sent_to_bottom_capture, os.path.join(copy_path, str(iterations) + "_bottom.png"))
-        shutil.move(card_drawn_capture, os.path.join(copy_path, str(iterations) + "_drawn.png"))
+        card_sent_to_bottom_capture_dest_path = os.path.join(copy_path, str(iterations) + "_bottom.png")
+        card_drawn_capture_dest_path          = os.path.join(copy_path, str(iterations) + "_drawn.png")
+
+        shutil.move(card_sent_to_bottom_capture, card_sent_to_bottom_capture_dest_path)
+        shutil.move(card_drawn_capture, card_drawn_capture_dest_path)
+
+        card_hash_to_times_card_sent_to_bottom[card_sent_to_bottom_hash] += 1
+        card_hash_to_times_card_drawn[card_drawn_hash]                   += 1
+        card_hash_to_capture[card_sent_to_bottom_hash] = card_sent_to_bottom_capture_dest_path
+        card_hash_to_capture[card_drawn_hash]          = card_drawn_capture_dest_path
+
+        print "hashes of captures of cards that were sent to the bottom and how many times that happened:", card_hash_to_times_card_sent_to_bottom
+        print
+        print "hashes of captures of cards that were drawn after scrying and how many times that happened:", card_hash_to_times_card_drawn
+        print
+        print card_hash_to_capture
 
         click(LOCATION_X_CLOSE)
 

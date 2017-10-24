@@ -93,6 +93,10 @@ LOCATION_FIRST_CARD_IN_HAND                         = Location(<span class="dig"
 LOCATION_X_CLOSE                                    = Location(<span class="dig">1902</span>, <span class="dig">14</span>)
 LOCATION_CONCEDE_MATCH                              = Location(<span class="dig">961</span>, <span class="dig">579</span>)
 
+<span class="kw">class</span> MyDict(dict):
+    <span class="kw">def</span> __missing__(self, key):
+        <span class="kw">return</span> <span class="dig">0</span>
+
 <span class="kw">def</span> hash_file(file_path):
     hasher = hashlib.md5()
     <span class="kw">with</span> open(file_path, <span class="str">'rb'</span>) <span class="kw">as</span> opened_file:
@@ -123,10 +127,15 @@ LOCATION_CONCEDE_MATCH                              = Location(<span class="dig"
 
     iterations = <span class="dig">0</span>
     hits = <span class="dig">0</span>
+    card_hash_to_times_card_sent_to_bottom = MyDict()
+    card_hash_to_times_card_drawn          = MyDict()
+    card_hash_to_capture                   = {}
 
     <span class="kw">while</span> True:
         REGION_PLAY.<span class="skw">wait</span>(<img src="play.png" />)
         REGION_PLAY.<span class="skw">click</span>(LOCATION_PLAY)
+
+        time.<span class="skw">sleep</span>(<span class="dig">0.5</span>)
 
         REGION_MULLIGAN_KEEP.<span class="skw">wait</span>(<img src="mulligan_keep.png" />)
         <span class="kw">for</span> i <span class="kw">in</span> range(<span class="dig">0</span>, <span class="dig">7</span>):
@@ -154,9 +163,6 @@ LOCATION_CONCEDE_MATCH                              = Location(<span class="dig"
         card_sent_to_bottom_hash = hash_file(card_sent_to_bottom_capture)
         card_drawn_hash          = hash_file(card_drawn_capture)
 
-        <span class="kw">print</span> <span class="str">"card_sent_to_bottom_hash"</span>, card_sent_to_bottom_hash
-        <span class="kw">print</span> <span class="str">"card_drawn_hash"</span>, card_drawn_hash
-
         <span class="kw">if</span> card_sent_to_bottom_hash == card_drawn_hash:
             hits += <span class="dig">1</span>
             copy_path = HITS_PATH
@@ -166,8 +172,22 @@ LOCATION_CONCEDE_MATCH                              = Location(<span class="dig"
         iterations += <span class="dig">1</span>
         <span class="kw">print</span> hits, <span class="str">"/"</span>, iterations
 
-        shutil.move(card_sent_to_bottom_capture, os.path.join(copy_path, str(iterations) + <img src="_bottom.png" />))
-        shutil.move(card_drawn_capture, os.path.join(copy_path, str(iterations) + <img src="_drawn.png" />))
+        card_sent_to_bottom_capture_dest_path = os.path.join(copy_path, str(iterations) + <img src="_bottom.png" />)
+        card_drawn_capture_dest_path          = os.path.join(copy_path, str(iterations) + <img src="_drawn.png" />)
+
+        shutil.move(card_sent_to_bottom_capture, card_sent_to_bottom_capture_dest_path)
+        shutil.move(card_drawn_capture, card_drawn_capture_dest_path)
+
+        card_hash_to_times_card_sent_to_bottom[card_sent_to_bottom_hash] += <span class="dig">1</span>
+        card_hash_to_times_card_drawn[card_drawn_hash]                   += <span class="dig">1</span>
+        card_hash_to_capture[card_sent_to_bottom_hash] = card_sent_to_bottom_capture_dest_path
+        card_hash_to_capture[card_drawn_hash]          = card_drawn_capture_dest_path
+
+        <span class="kw">print</span> <span class="str">"hashes of captures of cards that were sent to the bottom and how many times that happened:"</span>, card_hash_to_times_card_sent_to_bottom
+        <span class="kw">print</span>
+        <span class="kw">print</span> <span class="str">"hashes of captures of cards that were drawn after scrying and how many times that happened:"</span>, card_hash_to_times_card_drawn
+        <span class="kw">print</span>
+        <span class="kw">print</span> card_hash_to_capture
 
         <span class="skw">click</span>(LOCATION_X_CLOSE)
 
