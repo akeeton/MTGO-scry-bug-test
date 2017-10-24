@@ -3,12 +3,12 @@ import shutil
 import tempfile
 import time
 
-region_play = Region(7,965,334,57)
-region_mulligan_keep = Region(0,13,175,154)
-region_temporary_zone = Region(1150,195,130,37)
-region_put_on_the_bottom_of_your_library = Region(921,181,459,166)
-region_on_the_bottom_of_the_library = Region(1726,664,180,37)
-region_concede_match_button = Region(891,554,133,48)
+REGION_PLAY                              = Region(7,965,334,57)
+REGION_MULLIGAN_KEEP                     = Region(0,13,175,154)
+REGION_TEMPORARY_ZONE                    = Region(1150,195,130,37)
+REGION_PUT_ON_THE_BOTTOM_OF_YOUR_LIBRARY = Region(921,181,459,166)
+REGION_ON_THE_BOTTOM_OF_THE_LIBRARY      = Region(1726,664,180,37)
+REGION_CONCEDE_MATCH_BUTTON              = Region(891,554,133,48)
 
 TEMP_DIR_PREFIX = time.strftime("MTGO-scry-bug_%Y-%m-%d_%H-%M-%S", time.gmtime())
 TEMP_PATH = tempfile.mkdtemp(prefix=TEMP_DIR_PREFIX)
@@ -33,25 +33,25 @@ iterations = 0
 hits = 0
 
 while True:
-    region_play.wait("play.png", 5)
-    region_play.click(Location(164, 993))
+    REGION_PLAY.wait("play.png", 5)
+    REGION_PLAY.click(Location(164, 993))
 
-    region_mulligan_keep.wait("mulligan_keep.png", 5)
+    REGION_MULLIGAN_KEEP.wait("mulligan_keep.png", 5)
     for i in range(0, 7):
-        region_mulligan_keep.wait("mulligan_highlighted_keep.png", 5)
+        REGION_MULLIGAN_KEEP.wait("mulligan_highlighted_keep.png", 5)
         time.sleep(0.5)
-        region_mulligan_keep.click(Location(47, 142))
+        REGION_MULLIGAN_KEEP.click(Location(47, 142))
 
-    region_temporary_zone.wait("temporary_zone.png", 5)
+    REGION_TEMPORARY_ZONE.wait("temporary_zone.png", 5)
     time.sleep(0.1)
     card_sent_to_bottom = capture(Region(1209,283,102,63))
 
     click(Location(1242, 379)) # Click on the top card of the library.
 
     time.sleep(0.5)
-    region_put_on_the_bottom_of_your_library.click(Location(1139, 424)) # Click on "Put on the bottom of your library."
+    REGION_PUT_ON_THE_BOTTOM_OF_YOUR_LIBRARY.click(Location(1139, 424)) # Click on "Put on the bottom of your library."
 
-    region_on_the_bottom_of_the_library.wait("card_on_the_bottom_of_the_library.png", 5)
+    REGION_ON_THE_BOTTOM_OF_THE_LIBRARY.wait("card_on_the_bottom_of_the_library.png", 5)
     time.sleep(0.5)
 
     card_drawn_region = Region(Region(203,780,155,115))
