@@ -93,6 +93,8 @@ LOCATION_FIRST_CARD_IN_HAND                         = Location(<span class="dig"
 LOCATION_X_CLOSE                                    = Location(<span class="dig">1902</span>, <span class="dig">14</span>)
 LOCATION_CONCEDE_MATCH                              = Location(<span class="dig">961</span>, <span class="dig">579</span>)
 
+AUTO_WAIT_TIMEOUT_SECONDS                           = <span class="dig">5</span>
+
 <span class="kw">class</span> MyDict(dict):
     <span class="kw">def</span> __missing__(self, key):
         <span class="kw">return</span> <span class="dig">0</span>
@@ -124,6 +126,8 @@ LOCATION_CONCEDE_MATCH                              = Location(<span class="dig"
     os.mkdir(OUTPUT_PATH)
     os.mkdir(HITS_PATH)
     os.mkdir(MISSES_PATH)
+
+    Settings.AutoWaitTimeout = AUTO_WAIT_TIMEOUT_SECONDS
 
     iterations = <span class="dig">0</span>
     hits = <span class="dig">0</span>

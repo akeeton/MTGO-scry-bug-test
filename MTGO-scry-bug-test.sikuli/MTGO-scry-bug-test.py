@@ -21,6 +21,8 @@ LOCATION_FIRST_CARD_IN_HAND                         = Location(282, 910)
 LOCATION_X_CLOSE                                    = Location(1902, 14)
 LOCATION_CONCEDE_MATCH                              = Location(961, 579)
 
+AUTO_WAIT_TIMEOUT_SECONDS                           = 5
+
 class MyDict(dict):
     def __missing__(self, key):
         return 0
@@ -52,6 +54,8 @@ def main():
     os.mkdir(OUTPUT_PATH)
     os.mkdir(HITS_PATH)
     os.mkdir(MISSES_PATH)
+
+    Settings.AutoWaitTimeout = AUTO_WAIT_TIMEOUT_SECONDS
 
     iterations = 0
     hits = 0
