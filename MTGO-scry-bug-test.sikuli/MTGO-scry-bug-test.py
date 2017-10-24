@@ -41,11 +41,11 @@ while True:
         region_mulligan_keep.wait("mulligan-keep.png", 5)
         time.sleep(0.5)
         region_mulligan_keep.click(Location(47, 142))
-    
+
     region_temporary_zone.wait("1508222653397.png", 5)
-    time.sleep(0.1)    
+    time.sleep(0.1)
     card_sent_to_bottom = capture(Region(1209,283,102,63))
-    
+
     click(Location(1242, 379)) # Click on the top card of the library.
 
     time.sleep(0.5)
@@ -53,18 +53,18 @@ while True:
 
     region_on_the_bottom_of_the_library.wait("1508335404323.png", 5)
     time.sleep(0.5)
-    
+
     card_drawn_region = Region(Region(203,780,155,115))
     card_drawn = capture(card_drawn_region)
 
     copy_path = ""
-    
+
     if card_drawn_region.exists(card_sent_to_bottom):
         hits += 1
         copy_path = HITS_PATH
     else:
         copy_path = MISSES_PATH
-    
+
     iterations += 1
     print hits, "/", iterations
 
@@ -76,4 +76,3 @@ while True:
     region_concede_match_button.wait("1508227869176.png", 5)
     time.sleep(0.5)
     region_concede_match_button.click("1508227869176.png")
-    
