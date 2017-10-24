@@ -3,20 +3,20 @@ import shutil
 import tempfile
 import time
 
-REGION_PLAY                                = Region(7,965,334,57)
-REGION_MULLIGAN_KEEP                       = Region(0,13,175,154)
-REGION_CARD_SENT_TO_BOTTOM                 = Region(1209,283,102,63)
-REGION_TEMPORARY_ZONE                      = Region(1017,199,124,29)
-REGION_PUT_ON_THE_BOTTOM_OF_YOUR_LIBRARY   = Region(921,181,459,166)
-REGION_ON_THE_BOTTOM_OF_THE_LIBRARY        = Region(1726,664,180,37)
-REGION_CARD_DRAWN                          = Region(203,780,155,115)
-REGION_CONCEDE_MATCH_BUTTON                = Region(891,554,133,48)
+REGION_PLAY                                         = Region(7,965,334,57)
+REGION_MULLIGAN_KEEP                                = Region(0,13,175,154)
+REGION_CARD_SENT_TO_BOTTOM                          = Region(1209,283,102,63)
+REGION_TEMPORARY_ZONE                               = Region(1017,199,124,29)
+REGION_PUT_ON_THE_BOTTOM_OF_YOUR_LIBRARY            = Region(921,181,459,166)
+REGION_CHAT_PUT_A_CARD_ON_THE_BOTTOM_OF_THE_LIBRARY = Region(1523,678,338,32)
+REGION_CARD_DRAWN                                   = Region(203,780,155,115)
+REGION_CONCEDE_MATCH_BUTTON                         = Region(891,554,133,48)
 
-LOCATION_PLAY                              = Location(169, 995)
-LOCATION_MULLIGAN                          = Location(47, 141)
-LOCATION_TEMPORARY_ZONE_CARD               = Location(1195, 382)
-LOCATION_PUT_ON_THE_BOTTOM_OF_YOUR_LIBRARY = Location(1118, 430)
-LOCATION_X_CLOSE                           = Location(1902, 14)
+LOCATION_PLAY                                       = Location(169, 995)
+LOCATION_MULLIGAN                                   = Location(47, 141)
+LOCATION_TEMPORARY_ZONE_CARD                        = Location(1195, 382)
+LOCATION_PUT_ON_THE_BOTTOM_OF_YOUR_LIBRARY          = Location(1118, 430)
+LOCATION_X_CLOSE                                    = Location(1902, 14)
 
 TEMP_DIR_PREFIX = time.strftime("MTGO-scry-bug_%Y-%m-%d_%H-%M-%S", time.gmtime())
 TEMP_PATH = tempfile.mkdtemp(prefix=TEMP_DIR_PREFIX)
@@ -59,7 +59,7 @@ while True:
     time.sleep(0.5)
     REGION_PUT_ON_THE_BOTTOM_OF_YOUR_LIBRARY.click(LOCATION_PUT_ON_THE_BOTTOM_OF_YOUR_LIBRARY) # Click on "Put on the bottom of your library."
 
-    REGION_ON_THE_BOTTOM_OF_THE_LIBRARY.wait("card_on_the_bottom_of_the_library.png")
+    REGION_CHAT_PUT_A_CARD_ON_THE_BOTTOM_OF_THE_LIBRARY.wait("chat_put_a_card_on_the_bottom_of_the_library.png")
     time.sleep(0.5)
 
     card_drawn = capture(REGION_CARD_DRAWN)
