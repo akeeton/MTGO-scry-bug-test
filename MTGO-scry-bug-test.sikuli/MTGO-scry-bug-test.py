@@ -64,18 +64,17 @@ def main():
 
         REGION_TEMPORARY_ZONE.wait("temporary_zone.png")
         time.sleep(0.1)
-
         click(LOCATION_TEMPORARY_ZONE_CARD)
         time.sleep(0.5)
 
         REGION_PUT_ON_THE_BOTTOM_OF_YOUR_LIBRARY.click(LOCATION_PUT_ON_THE_BOTTOM_OF_YOUR_LIBRARY)
 
         REGION_CHAT_PUT_A_CARD_ON_THE_BOTTOM_OF_THE_LIBRARY.wait("chat_put_a_card_on_the_bottom_of_the_library.png")
-        time.sleep(0.5)
+        time.sleep(0.1)
 
         card_sent_to_bottom_capture = capture(REGION_CARD_PREVIEW_CAPTURE)
         hover(LOCATION_FIRST_CARD_IN_HAND) # Update the preview with the drawn card.
-        time.sleep(1.0)
+        time.sleep(0.5)
         card_drawn_capture = capture(REGION_CARD_PREVIEW_CAPTURE)
 
         copy_path = ""
@@ -101,7 +100,7 @@ def main():
         click(LOCATION_X_CLOSE)
 
         region_concede_match_button.wait("concede_match.png")
-        time.sleep(0.5)
+        time.sleep(0.1)
         region_concede_match_button.click(LOCATION_CONCEDE_MATCH)
 
 if __name__ == '__main__':
