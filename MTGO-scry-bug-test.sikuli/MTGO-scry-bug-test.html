@@ -90,10 +90,10 @@ LOCATION_MULLIGAN                                   = Location(<span class="dig"
 LOCATION_TEMPORARY_ZONE_CARD                        = Location(<span class="dig">1195</span>, <span class="dig">382</span>)
 LOCATION_PUT_ON_THE_BOTTOM_OF_YOUR_LIBRARY          = Location(<span class="dig">1118</span>, <span class="dig">430</span>)
 LOCATION_FIRST_CARD_IN_HAND                         = Location(<span class="dig">282</span>, <span class="dig">910</span>)
-LOCATION_X_CLOSE                                    = Location(<span class="dig">1902</span>, <span class="dig">14</span>)
+LOCATION_X_CLOSE                                    = Location(<span class="dig">1902</span>, <span class="dig">16</span>)
 LOCATION_CONCEDE_MATCH                              = Location(<span class="dig">961</span>, <span class="dig">579</span>)
 
-AUTO_WAIT_TIMEOUT_SECONDS                           = <span class="dig">5</span>
+AUTO_WAIT_TIMEOUT_SECONDS                           = <span class="dig">10</span>
 
 <span class="kw">class</span> MyDict(dict):
     <span class="kw">def</span> __missing__(self, key):
@@ -195,9 +195,9 @@ AUTO_WAIT_TIMEOUT_SECONDS                           = <span class="dig">5</span>
 
         <span class="skw">click</span>(LOCATION_X_CLOSE)
 
-        region_concede_match_button.<span class="skw">wait</span>(<img src="concede_match.png" />)
+        REGION_CONCEDE_MATCH_BUTTON.<span class="skw">wait</span>(<img src="concede_match.png" />)
         time.<span class="skw">sleep</span>(<span class="dig">0.1</span>)
-        region_concede_match_button.<span class="skw">click</span>(LOCATION_CONCEDE_MATCH)
+        REGION_CONCEDE_MATCH_BUTTON.<span class="skw">click</span>(LOCATION_CONCEDE_MATCH)
 
 <span class="kw">if</span> __name__ == <span class="str">'__main__'</span>:
     main()

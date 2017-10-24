@@ -18,10 +18,10 @@ LOCATION_MULLIGAN                                   = Location(47, 141)
 LOCATION_TEMPORARY_ZONE_CARD                        = Location(1195, 382)
 LOCATION_PUT_ON_THE_BOTTOM_OF_YOUR_LIBRARY          = Location(1118, 430)
 LOCATION_FIRST_CARD_IN_HAND                         = Location(282, 910)
-LOCATION_X_CLOSE                                    = Location(1902, 14)
+LOCATION_X_CLOSE                                    = Location(1902, 16)
 LOCATION_CONCEDE_MATCH                              = Location(961, 579)
 
-AUTO_WAIT_TIMEOUT_SECONDS                           = 5
+AUTO_WAIT_TIMEOUT_SECONDS                           = 10
 
 class MyDict(dict):
     def __missing__(self, key):
@@ -123,9 +123,9 @@ def main():
 
         click(LOCATION_X_CLOSE)
 
-        region_concede_match_button.wait("concede_match.png")
+        REGION_CONCEDE_MATCH_BUTTON.wait("concede_match.png")
         time.sleep(0.1)
-        region_concede_match_button.click(LOCATION_CONCEDE_MATCH)
+        REGION_CONCEDE_MATCH_BUTTON.click(LOCATION_CONCEDE_MATCH)
 
 if __name__ == '__main__':
     main()
