@@ -75,12 +75,20 @@
 <span class="kw">import</span> tempfile
 <span class="kw">import</span> time
 
-region_play = Region(<span class="dig">7</span>,<span class="dig">965</span>,<span class="dig">334</span>,<span class="dig">57</span>)
-region_mulligan_keep = Region(<span class="dig">0</span>,<span class="dig">13</span>,<span class="dig">175</span>,<span class="dig">154</span>)
-region_temporary_zone = Region(<span class="dig">1150</span>,<span class="dig">195</span>,<span class="dig">130</span>,<span class="dig">37</span>)
-region_put_on_the_bottom_of_your_library = Region(<span class="dig">921</span>,<span class="dig">181</span>,<span class="dig">459</span>,<span class="dig">166</span>)
-region_on_the_bottom_of_the_library = Region(<span class="dig">1726</span>,<span class="dig">664</span>,<span class="dig">180</span>,<span class="dig">37</span>)
-region_concede_match_button = Region(<span class="dig">891</span>,<span class="dig">554</span>,<span class="dig">133</span>,<span class="dig">48</span>)
+REGION_PLAY                                = Region(<span class="dig">7</span>,<span class="dig">965</span>,<span class="dig">334</span>,<span class="dig">57</span>)
+REGION_MULLIGAN_KEEP                       = Region(<span class="dig">0</span>,<span class="dig">13</span>,<span class="dig">175</span>,<span class="dig">154</span>)
+REGION_CARD_SENT_TO_BOTTOM                 = Region(<span class="dig">1209</span>,<span class="dig">283</span>,<span class="dig">102</span>,<span class="dig">63</span>)
+REGION_TEMPORARY_ZONE                      = Region(<span class="dig">1017</span>,<span class="dig">199</span>,<span class="dig">124</span>,<span class="dig">29</span>)
+REGION_PUT_ON_THE_BOTTOM_OF_YOUR_LIBRARY   = Region(<span class="dig">921</span>,<span class="dig">181</span>,<span class="dig">459</span>,<span class="dig">166</span>)
+REGION_ON_THE_BOTTOM_OF_THE_LIBRARY        = Region(<span class="dig">1726</span>,<span class="dig">664</span>,<span class="dig">180</span>,<span class="dig">37</span>)
+REGION_CARD_DRAWN                          = Region(<span class="dig">203</span>,<span class="dig">780</span>,<span class="dig">155</span>,<span class="dig">115</span>)
+REGION_CONCEDE_MATCH_BUTTON                = Region(<span class="dig">891</span>,<span class="dig">554</span>,<span class="dig">133</span>,<span class="dig">48</span>)
+
+LOCATION_PLAY                              = Location(<span class="dig">169</span>, <span class="dig">995</span>)
+LOCATION_MULLIGAN                          = Location(<span class="dig">47</span>, <span class="dig">141</span>)
+LOCATION_TEMPORARY_ZONE_CARD               = Location(<span class="dig">1195</span>, <span class="dig">382</span>)
+LOCATION_PUT_ON_THE_BOTTOM_OF_YOUR_LIBRARY = Location(<span class="dig">1118</span>, <span class="dig">430</span>)
+LOCATION_X_CLOSE                           = Location(<span class="dig">1902</span>, <span class="dig">14</span>)
 
 TEMP_DIR_PREFIX = time.strftime(<span class="str">"MTGO-scry-bug_%Y-%m-%d_%H-%M-%S"</span>, time.gmtime())
 TEMP_PATH = tempfile.mkdtemp(prefix=TEMP_DIR_PREFIX)
@@ -105,29 +113,28 @@ iterations = <span class="dig">0</span>
 hits = <span class="dig">0</span>
 
 <span class="kw">while</span> True:
-    region_play.<span class="skw">wait</span>(<img src="1508227924297.png" />, <span class="dig">5</span>)
-    region_play.<span class="skw">click</span>(Location(<span class="dig">164</span>, <span class="dig">993</span>))
+    REGION_PLAY.<span class="skw">wait</span>(<img src="play.png" />)
+    REGION_PLAY.<span class="skw">click</span>(LOCATION_PLAY)
 
-    region_mulligan_keep.<span class="skw">wait</span>(<img src="1508342097962.png" />, <span class="dig">5</span>)
+    REGION_MULLIGAN_KEEP.<span class="skw">wait</span>(<img src="mulligan_keep.png" />)
     <span class="kw">for</span> i <span class="kw">in</span> range(<span class="dig">0</span>, <span class="dig">7</span>):
-        region_mulligan_keep.<span class="skw">wait</span>(<img src="mulligan-keep.png" />, <span class="dig">5</span>)
+        REGION_MULLIGAN_KEEP.<span class="skw">wait</span>(<img src="mulligan_highlighted_keep.png" />)
         time.<span class="skw">sleep</span>(<span class="dig">0.5</span>)
-        region_mulligan_keep.<span class="skw">click</span>(Location(<span class="dig">47</span>, <span class="dig">142</span>))
+        REGION_MULLIGAN_KEEP.<span class="skw">click</span>(LOCATION_MULLIGAN)
 
-    region_temporary_zone.<span class="skw">wait</span>(<img src="1508222653397.png" />, <span class="dig">5</span>)
+    REGION_TEMPORARY_ZONE.<span class="skw">wait</span>(<img src="temporary_zone.png" />)
     time.<span class="skw">sleep</span>(<span class="dig">0.1</span>)
-    card_sent_to_bottom = <span class="skw">capture</span>(Region(<span class="dig">1209</span>,<span class="dig">283</span>,<span class="dig">102</span>,<span class="dig">63</span>))
+    card_sent_to_bottom = <span class="skw">capture</span>(REGION_CARD_SENT_TO_BOTTOM)
 
-    <span class="skw">click</span>(Location(<span class="dig">1242</span>, <span class="dig">379</span>)) <span class="cmt"># Click on the top card of the library.</span>
+    <span class="skw">click</span>(LOCATION_TEMPORARY_ZONE_CARD) <span class="cmt"># Click on the top card of the library.</span>
 
     time.<span class="skw">sleep</span>(<span class="dig">0.5</span>)
-    region_put_on_the_bottom_of_your_library.<span class="skw">click</span>(Location(<span class="dig">1139</span>, <span class="dig">424</span>)) <span class="cmt"># Click on "Put on the bottom of your library."</span>
+    REGION_PUT_ON_THE_BOTTOM_OF_YOUR_LIBRARY.<span class="skw">click</span>(LOCATION_PUT_ON_THE_BOTTOM_OF_YOUR_LIBRARY) <span class="cmt"># Click on "Put on the bottom of your library."</span>
 
-    region_on_the_bottom_of_the_library.<span class="skw">wait</span>(<img src="1508335404323.png" />, <span class="dig">5</span>)
+    REGION_ON_THE_BOTTOM_OF_THE_LIBRARY.<span class="skw">wait</span>(<img src="card_on_the_bottom_of_the_library.png" />)
     time.<span class="skw">sleep</span>(<span class="dig">0.5</span>)
 
-    card_drawn_region = Region(Region(<span class="dig">203</span>,<span class="dig">780</span>,<span class="dig">155</span>,<span class="dig">115</span>))
-    card_drawn = <span class="skw">capture</span>(card_drawn_region)
+    card_drawn = <span class="skw">capture</span>(REGION_CARD_DRAWN)
 
     copy_path = <span class="str">""</span>
 
@@ -143,11 +150,11 @@ hits = <span class="dig">0</span>
     shutil.move(card_sent_to_bottom, os.path.join(copy_path, str(iterations) + <img src="_bottom.png" />))
     shutil.move(card_drawn, os.path.join(copy_path, str(iterations) + <img src="_drawn.png" />))
 
-    <span class="skw">click</span>(Location(<span class="dig">1903</span>, <span class="dig">13</span>)) <span class="cmt"># Click on the "X" (close) button.</span>
+    <span class="skw">click</span>(LOCATION_X_CLOSE) <span class="cmt"># Click on the "X" (close) button.</span>
 
-    region_concede_match_button.<span class="skw">wait</span>(<img src="1508227869176.png" />, <span class="dig">5</span>)
+    region_concede_match_button.<span class="skw">wait</span>(<img src="concede_match.png" />)
     time.<span class="skw">sleep</span>(<span class="dig">0.5</span>)
-    region_concede_match_button.<span class="skw">click</span>(<img src="1508227869176.png" />)
+    region_concede_match_button.<span class="skw">click</span>(<img src="concede_match.png" />)
 </pre>
 </body>
 </html>
