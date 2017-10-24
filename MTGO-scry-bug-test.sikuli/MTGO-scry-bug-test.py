@@ -23,18 +23,6 @@ LOCATION_CONCEDE_MATCH                              = Location(961, 579)
 
 AUTO_WAIT_TIMEOUT_SECONDS                           = 10
 
-class MyDict(dict):
-    def __missing__(self, key):
-        return 0
-
-def hash_file(file_path):
-    hasher = hashlib.md5()
-    with open(file_path, 'rb') as opened_file:
-        buf = opened_file.read()
-        hasher.update(buf)
-
-    return hasher.hexdigest()
-
 def main():
     TEMP_DIR_PREFIX = time.strftime("MTGO-scry-bug_%Y-%m-%d_%H-%M-%S", time.gmtime())
     TEMP_PATH = tempfile.mkdtemp(prefix=TEMP_DIR_PREFIX)
@@ -59,8 +47,8 @@ def main():
 
     iterations = 0
     hits = 0
-    card_hash_to_times_card_sent_to_bottom = MyDict()
-    card_hash_to_times_card_drawn          = MyDict()
+    card_hash_to_times_card_sent_to_bottom = ZeroValueDict()
+    card_hash_to_times_card_drawn          = ZeroValueDict()
     card_hash_to_capture                   = {}
 
     while True:
@@ -125,7 +113,19 @@ def main():
 
         REGION_CONCEDE_MATCH_BUTTON.wait("concede_match.png")
         time.sleep(0.1)
-        REGION_CONCEDE_MATCH_BUTTON.click(LOCATION_CONCEDE_MATCH)
+        type('\n')
+
+class ZeroValueDict(dict):
+    def __missing__(self, key):
+        return 0
+
+def hash_file(file_path):
+    hasher = hashlib.md5()
+    with open(file_path, 'rb') as opened_file:
+        buf = opened_file.read()
+        hasher.update(buf)
+
+    return hasher.hexdigest()
 
 if __name__ == '__main__':
     main()
