@@ -82,7 +82,7 @@ REGION_CARD_SENT_TO_BOTTOM                          = Region(<span class="dig">1
 REGION_TEMPORARY_ZONE                               = Region(<span class="dig">1017</span>,<span class="dig">199</span>,<span class="dig">124</span>,<span class="dig">29</span>)
 REGION_PUT_ON_THE_BOTTOM_OF_YOUR_LIBRARY            = Region(<span class="dig">921</span>,<span class="dig">181</span>,<span class="dig">459</span>,<span class="dig">166</span>)
 REGION_CHAT_PUT_A_CARD_ON_THE_BOTTOM_OF_THE_LIBRARY = Region(<span class="dig">1501</span>,<span class="dig">671</span>,<span class="dig">398</span>,<span class="dig">51</span>)
-REGION_CARD_PREVIEW_CAPTURE                         = Region(<span class="dig">1549</span>,<span class="dig">546</span>,<span class="dig">52</span>,<span class="dig">23</span>)
+REGION_CARD_PREVIEW_CAPTURE                         = Region(<span class="dig">1553</span>,<span class="dig">110</span>,<span class="dig">138</span>,<span class="dig">25</span>)
 REGION_CONCEDE_MATCH_BUTTON                         = Region(<span class="dig">891</span>,<span class="dig">554</span>,<span class="dig">133</span>,<span class="dig">48</span>)
 
 LOCATION_PLAY                                       = Location(<span class="dig">169</span>, <span class="dig">995</span>)
@@ -93,80 +93,6 @@ LOCATION_FIRST_CARD_IN_HAND                         = Location(<span class="dig"
 LOCATION_X_CLOSE                                    = Location(<span class="dig">1902</span>, <span class="dig">14</span>)
 LOCATION_CONCEDE_MATCH                              = Location(<span class="dig">961</span>, <span class="dig">579</span>)
 
-TEMP_DIR_PREFIX = time.strftime(<span class="str">"MTGO-scry-bug_%Y-%m-%d_%H-%M-%S"</span>, time.gmtime())
-TEMP_PATH = tempfile.mkdtemp(prefix=TEMP_DIR_PREFIX)
-<span class="kw">print</span> <span class="str">"TEMP_PATH:"</span>, TEMP_PATH
-
-OUTPUT_PATH = os.path.join(TEMP_PATH, <span class="str">'output'</span>)
-<span class="kw">print</span> <span class="str">"OUTPUT_PATH:"</span>, OUTPUT_PATH
-
-HITS_DIR = <span class="str">'hits'</span>
-HITS_PATH = os.path.join(OUTPUT_PATH, HITS_DIR)
-<span class="kw">print</span> <span class="str">"HITS_PATH:"</span>, HITS_PATH
-
-MISSES_DIR = <span class="str">'misses'</span>
-MISSES_PATH = os.path.join(OUTPUT_PATH, MISSES_DIR)
-<span class="kw">print</span> <span class="str">"MISSES_PATH:"</span>, MISSES_PATH
-
-os.mkdir(OUTPUT_PATH)
-os.mkdir(HITS_PATH)
-os.mkdir(MISSES_PATH)
-
-iterations = <span class="dig">0</span>
-hits = <span class="dig">0</span>
-
-<span class="kw">while</span> True:
-    REGION_PLAY.<span class="skw">wait</span>(<img src="play.png" />)
-    REGION_PLAY.<span class="skw">click</span>(LOCATION_PLAY)
-
-    REGION_MULLIGAN_KEEP.<span class="skw">wait</span>(<img src="mulligan_keep.png" />)
-    <span class="kw">for</span> i <span class="kw">in</span> range(<span class="dig">0</span>, <span class="dig">7</span>):
-        REGION_MULLIGAN_KEEP.<span class="skw">wait</span>(<img src="mulligan_highlighted_keep.png" />)
-        time.<span class="skw">sleep</span>(<span class="dig">0.5</span>)
-        REGION_MULLIGAN_KEEP.<span class="skw">click</span>(LOCATION_MULLIGAN)
-
-    REGION_TEMPORARY_ZONE.<span class="skw">wait</span>(<img src="temporary_zone.png" />)
-    time.<span class="skw">sleep</span>(<span class="dig">0.1</span>)
-
-    <span class="skw">click</span>(LOCATION_TEMPORARY_ZONE_CARD)
-    time.<span class="skw">sleep</span>(<span class="dig">0.5</span>)
-
-    REGION_PUT_ON_THE_BOTTOM_OF_YOUR_LIBRARY.<span class="skw">click</span>(LOCATION_PUT_ON_THE_BOTTOM_OF_YOUR_LIBRARY)
-
-    REGION_CHAT_PUT_A_CARD_ON_THE_BOTTOM_OF_THE_LIBRARY.<span class="skw">wait</span>(<img src="chat_put_a_card_on_the_bottom_of_the_library.png" />)
-    time.<span class="skw">sleep</span>(<span class="dig">0.5</span>)
-
-    card_sent_to_bottom_capture = <span class="skw">capture</span>(REGION_CARD_PREVIEW_CAPTURE)
-    hover(LOCATION_FIRST_CARD_IN_HAND) <span class="cmt"># Update the preview with the drawn card.</span>
-    time.<span class="skw">sleep</span>(<span class="dig">1.0</span>)
-    card_drawn_capture = <span class="skw">capture</span>(REGION_CARD_PREVIEW_CAPTURE)
-
-    copy_path = <span class="str">""</span>
-
-    card_sent_to_bottom_hash = hash_file(card_sent_to_bottom_capture)
-    card_drawn_hash          = hash_file(card_drawn_capture)
-
-    <span class="kw">print</span> <span class="str">"card_sent_to_bottom_hash"</span>, card_sent_to_bottom_hash
-    <span class="kw">print</span> <span class="str">"card_drawn_hash"</span>, card_drawn_hash
-
-    <span class="kw">if</span> card_sent_to_bottom_hash == card_drawn_hash:
-        hits += <span class="dig">1</span>
-        copy_path = HITS_PATH
-    <span class="kw">else</span>:
-        copy_path = MISSES_PATH
-
-    iterations += <span class="dig">1</span>
-    <span class="kw">print</span> hits, <span class="str">"/"</span>, iterations
-
-    shutil.move(card_sent_to_bottom_capture, os.path.join(copy_path, str(iterations) + <img src="_bottom.png" />))
-    shutil.move(card_drawn_capture, os.path.join(copy_path, str(iterations) + <img src="_drawn.png" />))
-
-    <span class="skw">click</span>(LOCATION_X_CLOSE)
-
-    region_concede_match_button.<span class="skw">wait</span>(<img src="concede_match.png" />)
-    time.<span class="skw">sleep</span>(<span class="dig">0.5</span>)
-    region_concede_match_button.<span class="skw">click</span>(LOCATION_CONCEDE_MATCH)
-
 <span class="kw">def</span> hash_file(file_path):
     hasher = hashlib.md5()
     <span class="kw">with</span> open(file_path, <span class="str">'rb'</span>) <span class="kw">as</span> opened_file:
@@ -174,6 +100,83 @@ hits = <span class="dig">0</span>
         hasher.update(buf)
 
     <span class="kw">return</span> hasher.hexdigest()
+
+<span class="kw">def</span> main():
+    TEMP_DIR_PREFIX = time.strftime(<span class="str">"MTGO-scry-bug_%Y-%m-%d_%H-%M-%S"</span>, time.gmtime())
+    TEMP_PATH = tempfile.mkdtemp(prefix=TEMP_DIR_PREFIX)
+    <span class="kw">print</span> <span class="str">"TEMP_PATH:"</span>, TEMP_PATH
+
+    OUTPUT_PATH = os.path.join(TEMP_PATH, <span class="str">'output'</span>)
+    <span class="kw">print</span> <span class="str">"OUTPUT_PATH:"</span>, OUTPUT_PATH
+
+    HITS_DIR = <span class="str">'hits'</span>
+    HITS_PATH = os.path.join(OUTPUT_PATH, HITS_DIR)
+    <span class="kw">print</span> <span class="str">"HITS_PATH:"</span>, HITS_PATH
+
+    MISSES_DIR = <span class="str">'misses'</span>
+    MISSES_PATH = os.path.join(OUTPUT_PATH, MISSES_DIR)
+    <span class="kw">print</span> <span class="str">"MISSES_PATH:"</span>, MISSES_PATH
+
+    os.mkdir(OUTPUT_PATH)
+    os.mkdir(HITS_PATH)
+    os.mkdir(MISSES_PATH)
+
+    iterations = <span class="dig">0</span>
+    hits = <span class="dig">0</span>
+
+    <span class="kw">while</span> True:
+        REGION_PLAY.<span class="skw">wait</span>(<img src="play.png" />)
+        REGION_PLAY.<span class="skw">click</span>(LOCATION_PLAY)
+
+        REGION_MULLIGAN_KEEP.<span class="skw">wait</span>(<img src="mulligan_keep.png" />)
+        <span class="kw">for</span> i <span class="kw">in</span> range(<span class="dig">0</span>, <span class="dig">7</span>):
+            REGION_MULLIGAN_KEEP.<span class="skw">wait</span>(<img src="mulligan_highlighted_keep.png" />)
+            time.<span class="skw">sleep</span>(<span class="dig">0.5</span>)
+            REGION_MULLIGAN_KEEP.<span class="skw">click</span>(LOCATION_MULLIGAN)
+
+        REGION_TEMPORARY_ZONE.<span class="skw">wait</span>(<img src="temporary_zone.png" />)
+        time.<span class="skw">sleep</span>(<span class="dig">0.1</span>)
+        <span class="skw">click</span>(LOCATION_TEMPORARY_ZONE_CARD)
+        time.<span class="skw">sleep</span>(<span class="dig">0.5</span>)
+
+        REGION_PUT_ON_THE_BOTTOM_OF_YOUR_LIBRARY.<span class="skw">click</span>(LOCATION_PUT_ON_THE_BOTTOM_OF_YOUR_LIBRARY)
+
+        REGION_CHAT_PUT_A_CARD_ON_THE_BOTTOM_OF_THE_LIBRARY.<span class="skw">wait</span>(<img src="chat_put_a_card_on_the_bottom_of_the_library.png" />)
+        time.<span class="skw">sleep</span>(<span class="dig">0.1</span>)
+
+        card_sent_to_bottom_capture = <span class="skw">capture</span>(REGION_CARD_PREVIEW_CAPTURE)
+        hover(LOCATION_FIRST_CARD_IN_HAND) <span class="cmt"># Update the preview with the drawn card.</span>
+        time.<span class="skw">sleep</span>(<span class="dig">0.5</span>)
+        card_drawn_capture = <span class="skw">capture</span>(REGION_CARD_PREVIEW_CAPTURE)
+
+        copy_path = <span class="str">""</span>
+
+        card_sent_to_bottom_hash = hash_file(card_sent_to_bottom_capture)
+        card_drawn_hash          = hash_file(card_drawn_capture)
+
+        <span class="kw">print</span> <span class="str">"card_sent_to_bottom_hash"</span>, card_sent_to_bottom_hash
+        <span class="kw">print</span> <span class="str">"card_drawn_hash"</span>, card_drawn_hash
+
+        <span class="kw">if</span> card_sent_to_bottom_hash == card_drawn_hash:
+            hits += <span class="dig">1</span>
+            copy_path = HITS_PATH
+        <span class="kw">else</span>:
+            copy_path = MISSES_PATH
+
+        iterations += <span class="dig">1</span>
+        <span class="kw">print</span> hits, <span class="str">"/"</span>, iterations
+
+        shutil.move(card_sent_to_bottom_capture, os.path.join(copy_path, str(iterations) + <img src="_bottom.png" />))
+        shutil.move(card_drawn_capture, os.path.join(copy_path, str(iterations) + <img src="_drawn.png" />))
+
+        <span class="skw">click</span>(LOCATION_X_CLOSE)
+
+        region_concede_match_button.<span class="skw">wait</span>(<img src="concede_match.png" />)
+        time.<span class="skw">sleep</span>(<span class="dig">0.1</span>)
+        region_concede_match_button.<span class="skw">click</span>(LOCATION_CONCEDE_MATCH)
+
+<span class="kw">if</span> __name__ == <span class="str">'__main__'</span>:
+    main()
 </pre>
 </body>
 </html>

@@ -10,7 +10,7 @@ REGION_CARD_SENT_TO_BOTTOM                          = Region(1209,283,102,63)
 REGION_TEMPORARY_ZONE                               = Region(1017,199,124,29)
 REGION_PUT_ON_THE_BOTTOM_OF_YOUR_LIBRARY            = Region(921,181,459,166)
 REGION_CHAT_PUT_A_CARD_ON_THE_BOTTOM_OF_THE_LIBRARY = Region(1501,671,398,51)
-REGION_CARD_PREVIEW_CAPTURE                         = Region(1549,546,52,23)
+REGION_CARD_PREVIEW_CAPTURE                         = Region(1553,110,138,25)
 REGION_CONCEDE_MATCH_BUTTON                         = Region(891,554,133,48)
 
 LOCATION_PLAY                                       = Location(169, 995)
