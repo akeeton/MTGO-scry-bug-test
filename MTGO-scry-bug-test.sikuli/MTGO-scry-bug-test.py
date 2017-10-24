@@ -33,16 +33,16 @@ iterations = 0
 hits = 0
 
 while True:
-    REGION_PLAY.wait("play.png", 5)
+    REGION_PLAY.wait("play.png")
     REGION_PLAY.click(Location(164, 993))
 
-    REGION_MULLIGAN_KEEP.wait("mulligan_keep.png", 5)
+    REGION_MULLIGAN_KEEP.wait("mulligan_keep.png")
     for i in range(0, 7):
-        REGION_MULLIGAN_KEEP.wait("mulligan_highlighted_keep.png", 5)
+        REGION_MULLIGAN_KEEP.wait("mulligan_highlighted_keep.png")
         time.sleep(0.5)
         REGION_MULLIGAN_KEEP.click(Location(47, 142))
 
-    REGION_TEMPORARY_ZONE.wait("temporary_zone.png", 5)
+    REGION_TEMPORARY_ZONE.wait("temporary_zone.png")
     time.sleep(0.1)
     card_sent_to_bottom = capture(Region(1209,283,102,63))
 
@@ -51,7 +51,7 @@ while True:
     time.sleep(0.5)
     REGION_PUT_ON_THE_BOTTOM_OF_YOUR_LIBRARY.click(Location(1139, 424)) # Click on "Put on the bottom of your library."
 
-    REGION_ON_THE_BOTTOM_OF_THE_LIBRARY.wait("card_on_the_bottom_of_the_library.png", 5)
+    REGION_ON_THE_BOTTOM_OF_THE_LIBRARY.wait("card_on_the_bottom_of_the_library.png")
     time.sleep(0.5)
 
     card_drawn_region = Region(Region(203,780,155,115))
@@ -73,6 +73,6 @@ while True:
 
     click(Location(1903, 13)) # Click on the "X" (close) button.
 
-    region_concede_match_button.wait("concede_match.png", 5)
+    region_concede_match_button.wait("concede_match.png")
     time.sleep(0.5)
     region_concede_match_button.click("concede_match.png")
