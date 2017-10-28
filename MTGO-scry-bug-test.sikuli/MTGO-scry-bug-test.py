@@ -53,6 +53,7 @@ def main():
 
     while True:
         REGION_PLAY.wait("play.png")
+        time.sleep(0.5)
         REGION_PLAY.click(LOCATION_PLAY)
 
         time.sleep(0.5)
@@ -60,7 +61,7 @@ def main():
         REGION_MULLIGAN_KEEP.wait("mulligan_keep.png")
         for i in range(0, 7):
             REGION_MULLIGAN_KEEP.wait("mulligan_highlighted_keep.png")
-            time.sleep(0.5)
+            time.sleep(1.0)
             REGION_MULLIGAN_KEEP.click(LOCATION_MULLIGAN)
 
         REGION_TEMPORARY_ZONE.wait("temporary_zone.png")

@@ -95,18 +95,6 @@ LOCATION_CONCEDE_MATCH                              = Location(<span class="dig"
 
 AUTO_WAIT_TIMEOUT_SECONDS                           = <span class="dig">10</span>
 
-<span class="kw">class</span> MyDict(dict):
-    <span class="kw">def</span> __missing__(self, key):
-        <span class="kw">return</span> <span class="dig">0</span>
-
-<span class="kw">def</span> hash_file(file_path):
-    hasher = hashlib.md5()
-    <span class="kw">with</span> open(file_path, <span class="str">'rb'</span>) <span class="kw">as</span> opened_file:
-        buf = opened_file.read()
-        hasher.update(buf)
-
-    <span class="kw">return</span> hasher.hexdigest()
-
 <span class="kw">def</span> main():
     TEMP_DIR_PREFIX = time.strftime(<span class="str">"MTGO-scry-bug_%Y-%m-%d_%H-%M-%S"</span>, time.gmtime())
     TEMP_PATH = tempfile.mkdtemp(prefix=TEMP_DIR_PREFIX)
@@ -131,12 +119,13 @@ AUTO_WAIT_TIMEOUT_SECONDS                           = <span class="dig">10</span
 
     iterations = <span class="dig">0</span>
     hits = <span class="dig">0</span>
-    card_hash_to_times_card_sent_to_bottom = MyDict()
-    card_hash_to_times_card_drawn          = MyDict()
+    card_hash_to_times_card_sent_to_bottom = ZeroValueDict()
+    card_hash_to_times_card_drawn          = ZeroValueDict()
     card_hash_to_capture                   = {}
 
     <span class="kw">while</span> True:
         REGION_PLAY.<span class="skw">wait</span>(<img src="play.png" />)
+        time.<span class="skw">sleep</span>(<span class="dig">0.5</span>)
         REGION_PLAY.<span class="skw">click</span>(LOCATION_PLAY)
 
         time.<span class="skw">sleep</span>(<span class="dig">0.5</span>)
@@ -144,7 +133,7 @@ AUTO_WAIT_TIMEOUT_SECONDS                           = <span class="dig">10</span
         REGION_MULLIGAN_KEEP.<span class="skw">wait</span>(<img src="mulligan_keep.png" />)
         <span class="kw">for</span> i <span class="kw">in</span> range(<span class="dig">0</span>, <span class="dig">7</span>):
             REGION_MULLIGAN_KEEP.<span class="skw">wait</span>(<img src="mulligan_highlighted_keep.png" />)
-            time.<span class="skw">sleep</span>(<span class="dig">0.5</span>)
+            time.<span class="skw">sleep</span>(<span class="dig">1.0</span>)
             REGION_MULLIGAN_KEEP.<span class="skw">click</span>(LOCATION_MULLIGAN)
 
         REGION_TEMPORARY_ZONE.<span class="skw">wait</span>(<img src="temporary_zone.png" />)
@@ -197,7 +186,19 @@ AUTO_WAIT_TIMEOUT_SECONDS                           = <span class="dig">10</span
 
         REGION_CONCEDE_MATCH_BUTTON.<span class="skw">wait</span>(<img src="concede_match.png" />)
         time.<span class="skw">sleep</span>(<span class="dig">0.1</span>)
-        REGION_CONCEDE_MATCH_BUTTON.<span class="skw">click</span>(LOCATION_CONCEDE_MATCH)
+        <span class="skw">type</span>(<span class="str">'\n'</span>)
+
+<span class="kw">class</span> ZeroValueDict(dict):
+    <span class="kw">def</span> __missing__(self, key):
+        <span class="kw">return</span> <span class="dig">0</span>
+
+<span class="kw">def</span> hash_file(file_path):
+    hasher = hashlib.md5()
+    <span class="kw">with</span> open(file_path, <span class="str">'rb'</span>) <span class="kw">as</span> opened_file:
+        buf = opened_file.read()
+        hasher.update(buf)
+
+    <span class="kw">return</span> hasher.hexdigest()
 
 <span class="kw">if</span> __name__ == <span class="str">'__main__'</span>:
     main()
