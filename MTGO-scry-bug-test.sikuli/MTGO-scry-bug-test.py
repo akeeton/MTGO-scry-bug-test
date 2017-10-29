@@ -111,7 +111,7 @@ def main():
         print
         print card_hash_to_capture
 
-        with open(os.path.join(OUTPUT_PATH, 'stats.txt'), 'w') as stats_file:
+        with open(os.path.join(OUTPUT_PATH, 'stats.json'), 'w') as stats_file:
             print json.dump(card_hash_to_times_card_sent_to_bottom, stats_file)
             print
             print json.dump(card_hash_to_times_card_drawn, stats_file)
