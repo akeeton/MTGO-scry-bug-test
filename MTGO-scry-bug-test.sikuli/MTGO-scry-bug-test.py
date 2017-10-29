@@ -91,16 +91,18 @@ def main():
         card_sent_to_bottom_hash = hash_file(card_sent_to_bottom_capture)
         card_drawn_hash          = hash_file(card_drawn_capture)
 
-        bottom_and_top_the_same = False
+        card_hash_to_times_card_sent_to_bottom[1][card_sent_to_bottom_hash]           += 1
+        card_hash_to_times_card_drawn[1][card_drawn_hash]                             += 1
+
         if card_sent_to_bottom_hash == card_drawn_hash:
             hits += 1
-            bottom_and_top_the_same = True
+            card_hash_to_times_card_sent_to_bottom_and_drawn[1][card_sent_to_bottom_hash] += 1
             copy_path = HITS_PATH
         else:
             copy_path = MISSES_PATH
 
         iterations += 1
-        print hits, "/", iterations
+        print "{0}/{1}".format(hits, iterations)
 
         card_sent_to_bottom_capture_dest_path = os.path.join(copy_path, str(iterations) + "_bottom.png")
         card_drawn_capture_dest_path          = os.path.join(copy_path, str(iterations) + "_drawn.png")
@@ -108,9 +110,6 @@ def main():
         shutil.move(card_sent_to_bottom_capture, card_sent_to_bottom_capture_dest_path)
         shutil.move(card_drawn_capture, card_drawn_capture_dest_path)
 
-        card_hash_to_times_card_sent_to_bottom[1][card_sent_to_bottom_hash]           += 1
-        card_hash_to_times_card_sent_to_bottom_and_drawn[1][card_sent_to_bottom_hash] += 1
-        card_hash_to_times_card_drawn[1][card_drawn_hash]                             += 1
         card_hash_to_capture[1][card_sent_to_bottom_hash] = card_sent_to_bottom_capture_dest_path
         card_hash_to_capture[1][card_drawn_hash]          = card_drawn_capture_dest_path
 
@@ -154,3 +153,4 @@ if __name__ == '__main__':
             print e
             with open(os.path.join(get_number_of_attempts_path(attempts), 'error.log'), 'w') as errorlog:
                 errorlog.write(str(e))
+            raise e # Replace this with a way to reset MTGO to a starting state so we can try again.
