@@ -35,15 +35,14 @@ def main():
     global attempts
     attempts += 1
 
-    HITS_PATH         = os.path.join(get_number_of_attempts_path(attempts), HITS_DIR)
-    MISSES_PATH       = os.path.join(get_number_of_attempts_path(attempts), MISSES_DIR)
+    HITS_PATH   = os.path.join(get_number_of_attempts_path(attempts), HITS_DIR)
+    MISSES_PATH = os.path.join(get_number_of_attempts_path(attempts), MISSES_DIR)
 
     print "TEMP_PATH:",                             TEMP_PATH
     print "get_number_of_attempts_path(attempts):", get_number_of_attempts_path(attempts)
     print "HITS_PATH:",                             HITS_PATH
     print "MISSES_PATH:",                           MISSES_PATH
 
-    print get_number_of_attempts_path(attempts)
     os.mkdir(get_number_of_attempts_path(attempts))
     os.mkdir(HITS_PATH)
     os.mkdir(MISSES_PATH)
@@ -52,10 +51,10 @@ def main():
 
     iterations = 0
     hits       = 0
-    card_hash_to_times_card_sent_to_bottom           = ZeroValueDict({'name': 'card_hash_to_times_card_sent_to_bottom'})
-    card_hash_to_times_card_sent_to_bottom_and_drawn = ZeroValueDict({'name': 'card_hash_to_times_card_sent_to_bottom_and_drawn'})
-    card_hash_to_times_card_drawn                    = ZeroValueDict({'name': 'card_hash_to_times_card_drawn'})
-    card_hash_to_capture                             = {'name': 'card_hash_to_capture'}
+    card_hash_to_times_card_sent_to_bottom           = ZeroValueDict({'_name': 'card_hash_to_times_card_sent_to_bottom'})
+    card_hash_to_times_card_sent_to_bottom_and_drawn = ZeroValueDict({'_name': 'card_hash_to_times_card_sent_to_bottom_and_drawn'})
+    card_hash_to_times_card_drawn                    = ZeroValueDict({'_name': 'card_hash_to_times_card_drawn'})
+    card_hash_to_capture                             = {'_name': 'card_hash_to_capture'}
 
     while True:
         REGION_PLAY.wait("play.png")
@@ -120,13 +119,13 @@ def main():
         print card_hash_to_capture
 
         with open(os.path.join(ATTEMPT_NO_PATH, 'stats.json'), 'w') as stats_file:
-            print json.dump(card_hash_to_times_card_sent_to_bottom_and_drawn[card_sent_to_bottom_hash], stats_file)
+            print json.dumps(card_hash_to_times_card_sent_to_bottom_and_drawn[card_sent_to_bottom_hash], stats_file)
             print
-            print json.dump(card_hash_to_times_card_sent_to_bottom, stats_file)
+            print json.dumps(card_hash_to_times_card_sent_to_bottom, stats_file)
             print
-            print json.dump(card_hash_to_times_card_drawn, stats_file)
+            print json.dumps(card_hash_to_times_card_drawn, stats_file)
             print
-            print json.dump(card_hash_to_capture, stats_file)
+            print json.dumps(card_hash_to_capture, stats_file)
             print
             print hits, '/', iterations
 
@@ -152,9 +151,10 @@ def get_number_of_attempts_path(attempts):
     return os.path.join(TEMP_PATH, 'attempt_{0}'.format(attempts))
 
 if __name__ == '__main__':
-    try:
-        main()
-    except FindFailed as e:
-        print e
-        with open(os.path.join(get_number_of_attempts_path(attempts), 'error.log'), 'w') as errorlog:
-            errorlog.write(str(e))
+    while True:
+        try:
+            main()
+        except FindFailed as e:
+            print e
+            with open(os.path.join(get_number_of_attempts_path(attempts), 'error.log'), 'w') as errorlog:
+                errorlog.write(str(e))
