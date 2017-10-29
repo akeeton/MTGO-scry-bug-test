@@ -24,33 +24,38 @@ LOCATION_CONCEDE_MATCH                              = Location(961, 579)
 
 AUTO_WAIT_TIMEOUT_SECONDS                           = 10
 
+TEMP_DIR_PREFIX   = time.strftime("MTGO-scry-bug_%Y-%m-%d_%H-%M-%S", time.gmtime())
+TEMP_PATH         = tempfile.mkdtemp(prefix=TEMP_DIR_PREFIX)
+HITS_DIR          = 'hits'
+MISSES_DIR        = 'misses'
+
+attempts = 0
+
 def main():
-    TEMP_DIR_PREFIX = time.strftime("MTGO-scry-bug_%Y-%m-%d_%H-%M-%S", time.gmtime())
-    TEMP_PATH = tempfile.mkdtemp(prefix=TEMP_DIR_PREFIX)
-    print "TEMP_PATH:", TEMP_PATH
+    global attempts
+    attempts += 1
 
-    OUTPUT_PATH = os.path.join(TEMP_PATH, 'output')
-    print "OUTPUT_PATH:", OUTPUT_PATH
+    HITS_PATH         = os.path.join(get_number_of_attempts_path(attempts), HITS_DIR)
+    MISSES_PATH       = os.path.join(get_number_of_attempts_path(attempts), MISSES_DIR)
 
-    HITS_DIR = 'hits'
-    HITS_PATH = os.path.join(OUTPUT_PATH, HITS_DIR)
-    print "HITS_PATH:", HITS_PATH
+    print "TEMP_PATH:",                             TEMP_PATH
+    print "get_number_of_attempts_path(attempts):", get_number_of_attempts_path(attempts)
+    print "HITS_PATH:",                             HITS_PATH
+    print "MISSES_PATH:",                           MISSES_PATH
 
-    MISSES_DIR = 'misses'
-    MISSES_PATH = os.path.join(OUTPUT_PATH, MISSES_DIR)
-    print "MISSES_PATH:", MISSES_PATH
-
-    os.mkdir(OUTPUT_PATH)
+    print get_number_of_attempts_path(attempts)
+    os.mkdir(get_number_of_attempts_path(attempts))
     os.mkdir(HITS_PATH)
     os.mkdir(MISSES_PATH)
 
     Settings.AutoWaitTimeout = AUTO_WAIT_TIMEOUT_SECONDS
 
     iterations = 0
-    hits = 0
-    card_hash_to_times_card_sent_to_bottom = ZeroValueDict()
-    card_hash_to_times_card_drawn          = ZeroValueDict()
-    card_hash_to_capture                   = {}
+    hits       = 0
+    card_hash_to_times_card_sent_to_bottom           = ZeroValueDict({'name': 'card_hash_to_times_card_sent_to_bottom'})
+    card_hash_to_times_card_sent_to_bottom_and_drawn = ZeroValueDict({'name': 'card_hash_to_times_card_sent_to_bottom_and_drawn'})
+    card_hash_to_times_card_drawn                    = ZeroValueDict({'name': 'card_hash_to_times_card_drawn'})
+    card_hash_to_capture                             = {'name': 'card_hash_to_capture'}
 
     while True:
         REGION_PLAY.wait("play.png")
@@ -85,8 +90,10 @@ def main():
         card_sent_to_bottom_hash = hash_file(card_sent_to_bottom_capture)
         card_drawn_hash          = hash_file(card_drawn_capture)
 
+        bottom_and_top_the_same = False
         if card_sent_to_bottom_hash == card_drawn_hash:
             hits += 1
+            bottom_and_top_the_same = True
             copy_path = HITS_PATH
         else:
             copy_path = MISSES_PATH
@@ -100,8 +107,9 @@ def main():
         shutil.move(card_sent_to_bottom_capture, card_sent_to_bottom_capture_dest_path)
         shutil.move(card_drawn_capture, card_drawn_capture_dest_path)
 
-        card_hash_to_times_card_sent_to_bottom[card_sent_to_bottom_hash] += 1
-        card_hash_to_times_card_drawn[card_drawn_hash]                   += 1
+        card_hash_to_times_card_sent_to_bottom[card_sent_to_bottom_hash]           += 1
+        card_hash_to_times_card_sent_to_bottom_and_drawn[card_sent_to_bottom_hash] += 1
+        card_hash_to_times_card_drawn[card_drawn_hash]                             += 1
         card_hash_to_capture[card_sent_to_bottom_hash] = card_sent_to_bottom_capture_dest_path
         card_hash_to_capture[card_drawn_hash]          = card_drawn_capture_dest_path
 
@@ -111,12 +119,16 @@ def main():
         print
         print card_hash_to_capture
 
-        with open(os.path.join(OUTPUT_PATH, 'stats.json'), 'w') as stats_file:
+        with open(os.path.join(ATTEMPT_NO_PATH, 'stats.json'), 'w') as stats_file:
+            print json.dump(card_hash_to_times_card_sent_to_bottom_and_drawn[card_sent_to_bottom_hash], stats_file)
+            print
             print json.dump(card_hash_to_times_card_sent_to_bottom, stats_file)
             print
             print json.dump(card_hash_to_times_card_drawn, stats_file)
             print
             print json.dump(card_hash_to_capture, stats_file)
+            print
+            print hits, '/', iterations
 
         click(LOCATION_X_CLOSE)
 
@@ -136,5 +148,13 @@ def hash_file(file_path):
 
     return hasher.hexdigest()
 
+def get_number_of_attempts_path(attempts):
+    return os.path.join(TEMP_PATH, 'attempt_{0}'.format(attempts))
+
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except FindFailed as e:
+        print e
+        with open(os.path.join(get_number_of_attempts_path(attempts), 'error.log'), 'w') as errorlog:
+            errorlog.write(str(e))
