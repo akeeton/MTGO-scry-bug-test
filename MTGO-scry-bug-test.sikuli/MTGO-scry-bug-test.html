@@ -71,6 +71,7 @@
 </div>
 <pre class="sikuli-code">
 <span class="kw">import</span> hashlib
+<span class="kw">import</span> json
 <span class="kw">import</span> os
 <span class="kw">import</span> shutil
 <span class="kw">import</span> tempfile
@@ -181,6 +182,11 @@ AUTO_WAIT_TIMEOUT_SECONDS                           = <span class="dig">10</span
         <span class="kw">print</span> <span class="str">"hashes of captures of cards that were drawn after scrying and how many times that happened:"</span>, card_hash_to_times_card_drawn
         <span class="kw">print</span>
         <span class="kw">print</span> card_hash_to_capture
+
+        <span class="kw">with</span> open(os.path.join(OUTPUT_PATH, <span class="str">'stats.txt'</span>), <span class="str">'w'</span>) <span class="kw">as</span> stats_file:
+            <span class="kw">print</span> json.dump(card_hash_to_times_card_sent_to_bottom, stats_file)
+            <span class="cmt">#stats_file.write(card_hash_to_times_card_sent_to_bottom.__repr__)</span>
+            <span class="cmt">#stats_file.write(card_hash_to_times_card_drawn.__repr__)</span>
 
         <span class="skw">click</span>(LOCATION_X_CLOSE)
 

@@ -1,4 +1,5 @@
 import hashlib
+import json
 import os
 import shutil
 import tempfile
@@ -109,6 +110,11 @@ def main():
         print "hashes of captures of cards that were drawn after scrying and how many times that happened:", card_hash_to_times_card_drawn
         print
         print card_hash_to_capture
+
+        with open(os.path.join(OUTPUT_PATH, 'stats.txt'), 'w') as stats_file:
+            print json.dump(card_hash_to_times_card_sent_to_bottom, stats_file)
+            print
+            print json.dump(card_hash_to_times_card_drawn, stats_file)
 
         click(LOCATION_X_CLOSE)
 
