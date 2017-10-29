@@ -96,56 +96,61 @@ LOCATION_CONCEDE_MATCH                              = Location(<span class="dig"
 
 AUTO_WAIT_TIMEOUT_SECONDS                           = <span class="dig">10</span>
 
+IMAGES_PATH = <span class="str">'C:\\Users\\andre\\Documents\\GitHub\\MTGO-scry-bug-test\\MTGO-scry-bug-test.sikuli\\akeeton_laptop_images\\'</span>
+
+TEMP_DIR_PREFIX   = time.strftime(<span class="str">"MTGO-scry-bug_%Y-%m-%d_%H-%M-%S"</span>, time.gmtime())
+TEMP_PATH         = tempfile.mkdtemp(prefix=TEMP_DIR_PREFIX)
+HITS_DIR          = <span class="str">'hits'</span>
+MISSES_DIR        = <span class="str">'misses'</span>
+
+attempts = <span class="dig">0</span>
+
 <span class="kw">def</span> main():
-    TEMP_DIR_PREFIX = time.strftime(<span class="str">"MTGO-scry-bug_%Y-%m-%d_%H-%M-%S"</span>, time.gmtime())
-    TEMP_PATH = tempfile.mkdtemp(prefix=TEMP_DIR_PREFIX)
-    <span class="kw">print</span> <span class="str">"TEMP_PATH:"</span>, TEMP_PATH
+    <span class="kw">global</span> attempts
+    attempts += <span class="dig">1</span>
 
-    OUTPUT_PATH = os.path.join(TEMP_PATH, <span class="str">'output'</span>)
-    <span class="kw">print</span> <span class="str">"OUTPUT_PATH:"</span>, OUTPUT_PATH
+    HITS_PATH   = os.path.join(get_number_of_attempts_path(attempts), HITS_DIR)
+    MISSES_PATH = os.path.join(get_number_of_attempts_path(attempts), MISSES_DIR)
 
-    HITS_DIR = <span class="str">'hits'</span>
-    HITS_PATH = os.path.join(OUTPUT_PATH, HITS_DIR)
-    <span class="kw">print</span> <span class="str">"HITS_PATH:"</span>, HITS_PATH
+    <span class="kw">print</span> <span class="str">"TEMP_PATH:"</span>,                             TEMP_PATH
+    <span class="kw">print</span> <span class="str">"get_number_of_attempts_path(attempts):"</span>, get_number_of_attempts_path(attempts)
+    <span class="kw">print</span> <span class="str">"HITS_PATH:"</span>,                             HITS_PATH
+    <span class="kw">print</span> <span class="str">"MISSES_PATH:"</span>,                           MISSES_PATH
 
-    MISSES_DIR = <span class="str">'misses'</span>
-    MISSES_PATH = os.path.join(OUTPUT_PATH, MISSES_DIR)
-    <span class="kw">print</span> <span class="str">"MISSES_PATH:"</span>, MISSES_PATH
-
-    os.mkdir(OUTPUT_PATH)
+    os.mkdir(get_number_of_attempts_path(attempts))
     os.mkdir(HITS_PATH)
     os.mkdir(MISSES_PATH)
 
     Settings.AutoWaitTimeout = AUTO_WAIT_TIMEOUT_SECONDS
 
     iterations = <span class="dig">0</span>
-    hits = <span class="dig">0</span>
-    card_hash_to_times_card_sent_to_bottom           = ZeroValueDict({<span class="str">'name'</span>: <span class="str">'card_hash_to_times_card_sent_to_bottom'</span>})
-    card_hash_to_times_card_sent_to_bottom_and_drawn = ZeroValueDict({<span class="str">'name'</span>: <span class="str">'card_hash_to_times_card_sent_to_bottom_and_drawn'</span>})
-    card_hash_to_times_card_drawn                    = ZeroValueDict({<span class="str">'name'</span>: <span class="str">'card_hash_to_times_card_drawn'</span>})
-    card_hash_to_capture                             = {<span class="str">'name'</span>: <span class="str">'card_hash_to_capture'</span>}
+    hits       = <span class="dig">0</span>
+    card_hash_to_times_card_sent_to_bottom           = [<span class="str">'card_hash_to_times_card_sent_to_bottom'</span>, ZeroValueDict()]
+    card_hash_to_times_card_sent_to_bottom_and_drawn = [<span class="str">'card_hash_to_times_card_sent_to_bottom_and_drawn'</span>, ZeroValueDict()]
+    card_hash_to_times_card_drawn                    = [<span class="str">'card_hash_to_times_card_drawn'</span>, ZeroValueDict()]
+    card_hash_to_capture                             = [<span class="str">'card_hash_to_capture'</span>, {}]
 
     <span class="kw">while</span> True:
-        REGION_PLAY.<span class="skw">wait</span>(<img src="play.png" />)
+        REGION_PLAY.<span class="skw">wait</span>(os.path.join(IMAGES_PATH, <img src="play.png" />))
         time.<span class="skw">sleep</span>(<span class="dig">0.5</span>)
         REGION_PLAY.<span class="skw">click</span>(LOCATION_PLAY)
 
         time.<span class="skw">sleep</span>(<span class="dig">0.5</span>)
 
-        REGION_MULLIGAN_KEEP.<span class="skw">wait</span>(<img src="mulligan_keep.png" />)
+        REGION_MULLIGAN_KEEP.<span class="skw">wait</span>(os.path.join(IMAGES_PATH, <img src="mulligan_keep.png" />))
         <span class="kw">for</span> i <span class="kw">in</span> range(<span class="dig">0</span>, <span class="dig">7</span>):
-            REGION_MULLIGAN_KEEP.<span class="skw">wait</span>(<img src="mulligan_highlighted_keep.png" />)
+            REGION_MULLIGAN_KEEP.<span class="skw">wait</span>(os.path.join(IMAGES_PATH, <img src="mulligan_highlighted_keep.png" />))
             time.<span class="skw">sleep</span>(<span class="dig">1.0</span>)
             REGION_MULLIGAN_KEEP.<span class="skw">click</span>(LOCATION_MULLIGAN)
 
-        REGION_TEMPORARY_ZONE.<span class="skw">wait</span>(<img src="temporary_zone.png" />)
+        REGION_TEMPORARY_ZONE.<span class="skw">wait</span>(os.path.join(IMAGES_PATH, <img src="temporary_zone.png" />))
         time.<span class="skw">sleep</span>(<span class="dig">0.1</span>)
         <span class="skw">click</span>(LOCATION_TEMPORARY_ZONE_CARD)
         time.<span class="skw">sleep</span>(<span class="dig">0.5</span>)
 
         REGION_PUT_ON_THE_BOTTOM_OF_YOUR_LIBRARY.<span class="skw">click</span>(LOCATION_PUT_ON_THE_BOTTOM_OF_YOUR_LIBRARY)
 
-        REGION_CHAT_PUT_A_CARD_ON_THE_BOTTOM_OF_THE_LIBRARY.<span class="skw">wait</span>(<img src="chat_put_a_card_on_the_bottom_of_the_library.png" />)
+        REGION_CHAT_PUT_A_CARD_ON_THE_BOTTOM_OF_THE_LIBRARY.<span class="skw">wait</span>(os.path.join(IMAGES_PATH, <img src="chat_put_a_card_on_the_bottom_of_the_library.png" />))
         time.<span class="skw">sleep</span>(<span class="dig">0.1</span>)
 
         card_sent_to_bottom_capture = <span class="skw">capture</span>(REGION_CARD_PREVIEW_CAPTURE)
@@ -175,32 +180,26 @@ AUTO_WAIT_TIMEOUT_SECONDS                           = <span class="dig">10</span
         shutil.move(card_sent_to_bottom_capture, card_sent_to_bottom_capture_dest_path)
         shutil.move(card_drawn_capture, card_drawn_capture_dest_path)
 
-        card_hash_to_times_card_sent_to_bottom[card_sent_to_bottom_hash]           += <span class="dig">1</span>
-        card_hash_to_times_card_sent_to_bottom_and_drawn[card_sent_to_bottom_hash] += <span class="dig">1</span>
-        card_hash_to_times_card_drawn[card_drawn_hash]                             += <span class="dig">1</span>
-        card_hash_to_capture[card_sent_to_bottom_hash] = card_sent_to_bottom_capture_dest_path
-        card_hash_to_capture[card_drawn_hash]          = card_drawn_capture_dest_path
+        card_hash_to_times_card_sent_to_bottom[<span class="dig">1</span>][card_sent_to_bottom_hash]           += <span class="dig">1</span>
+        card_hash_to_times_card_sent_to_bottom_and_drawn[<span class="dig">1</span>][card_sent_to_bottom_hash] += <span class="dig">1</span>
+        card_hash_to_times_card_drawn[<span class="dig">1</span>][card_drawn_hash]                             += <span class="dig">1</span>
+        card_hash_to_capture[<span class="dig">1</span>][card_sent_to_bottom_hash] = card_sent_to_bottom_capture_dest_path
+        card_hash_to_capture[<span class="dig">1</span>][card_drawn_hash]          = card_drawn_capture_dest_path
 
-        <span class="kw">print</span> <span class="str">"hashes of captures of cards that were sent to the bottom and how many times that happened:"</span>, card_hash_to_times_card_sent_to_bottom
-        <span class="kw">print</span>
-        <span class="kw">print</span> <span class="str">"hashes of captures of cards that were drawn after scrying and how many times that happened:"</span>, card_hash_to_times_card_drawn
-        <span class="kw">print</span>
-        <span class="kw">print</span> card_hash_to_capture
-
-        <span class="kw">with</span> open(os.path.join(OUTPUT_PATH, <span class="str">'stats.json'</span>), <span class="str">'w'</span>) <span class="kw">as</span> stats_file:
-            <span class="kw">print</span> json.dump(card_hash_to_times_card_sent_to_bottom_and_drawn[card_sent_to_bottom_hash], stats_file)
-            <span class="kw">print</span>
-            <span class="kw">print</span> json.dump(card_hash_to_times_card_sent_to_bottom, stats_file)
-            <span class="kw">print</span>
-            <span class="kw">print</span> json.dump(card_hash_to_times_card_drawn, stats_file)
-            <span class="kw">print</span>
-            <span class="kw">print</span> json.dump(card_hash_to_capture, stats_file)
-            <span class="kw">print</span>
-            <span class="kw">print</span> hits, <span class="str">'/'</span>, iterations
+        <span class="kw">with</span> open(os.path.join(get_number_of_attempts_path(attempts), <span class="str">'stats.json'</span>), <span class="str">'w'</span>) <span class="kw">as</span> stats_file:
+            json.dump(card_hash_to_times_card_sent_to_bottom_and_drawn, stats_file, sort_keys=True, indent=<span class="dig">4</span>)
+            stats_file.write(<span class="str">'\n'</span>)
+            json.dump(card_hash_to_times_card_sent_to_bottom, stats_file, sort_keys=True, indent=<span class="dig">4</span>)
+            stats_file.write(<span class="str">'\n'</span>)
+            json.dump(card_hash_to_times_card_drawn, stats_file, sort_keys=True, indent=<span class="dig">4</span>)
+            stats_file.write(<span class="str">'\n'</span>)
+            json.dump(card_hash_to_capture, stats_file, sort_keys=True, indent=<span class="dig">4</span>)
+            stats_file.write(<span class="str">'\n'</span>)
+            stats_file.write(<span class="str">'{0}/{1}'</span>.format(hits, iterations))
 
         <span class="skw">click</span>(LOCATION_X_CLOSE)
 
-        REGION_CONCEDE_MATCH_BUTTON.<span class="skw">wait</span>(<img src="concede_match.png" />)
+        REGION_CONCEDE_MATCH_BUTTON.<span class="skw">wait</span>(os.path.join(IMAGES_PATH, <img src="concede_match.png" />))
         time.<span class="skw">sleep</span>(<span class="dig">0.1</span>)
         <span class="skw">type</span>(<span class="str">'\n'</span>)
 
@@ -216,13 +215,17 @@ AUTO_WAIT_TIMEOUT_SECONDS                           = <span class="dig">10</span
 
     <span class="kw">return</span> hasher.hexdigest()
 
+<span class="kw">def</span> get_number_of_attempts_path(attempts):
+    <span class="kw">return</span> os.path.join(TEMP_PATH, <span class="str">'attempt_{0}'</span>.format(attempts))
+
 <span class="kw">if</span> __name__ == <span class="str">'__main__'</span>:
-    <span class="kw">try</span>:
-        main()
-    <span class="kw">except</span> FindFailed <span class="kw">as</span> e:
-        <span class="kw">print</span> e
-        <span class="kw">with</span> open(os.path.join(TEMP_PATH, <span class="str">'error.log'</span>), <span class="str">'w'</span>) <span class="kw">as</span> errorlog:
-            errorlog.write(str(e))
+    <span class="kw">while</span> True:
+        <span class="kw">try</span>:
+            main()
+        <span class="kw">except</span> FindFailed <span class="kw">as</span> e:
+            <span class="kw">print</span> e
+            <span class="kw">with</span> open(os.path.join(get_number_of_attempts_path(attempts), <span class="str">'error.log'</span>), <span class="str">'w'</span>) <span class="kw">as</span> errorlog:
+                errorlog.write(str(e))
 </pre>
 </body>
 </html>

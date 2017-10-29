@@ -24,6 +24,8 @@ LOCATION_CONCEDE_MATCH                              = Location(961, 579)
 
 AUTO_WAIT_TIMEOUT_SECONDS                           = 10
 
+IMAGES_PATH = 'C:\\Users\\andre\\Documents\\GitHub\\MTGO-scry-bug-test\\MTGO-scry-bug-test.sikuli\\akeeton_laptop_images\\'
+
 TEMP_DIR_PREFIX   = time.strftime("MTGO-scry-bug_%Y-%m-%d_%H-%M-%S", time.gmtime())
 TEMP_PATH         = tempfile.mkdtemp(prefix=TEMP_DIR_PREFIX)
 HITS_DIR          = 'hits'
@@ -51,32 +53,32 @@ def main():
 
     iterations = 0
     hits       = 0
-    card_hash_to_times_card_sent_to_bottom           = ZeroValueDict({'_name': 'card_hash_to_times_card_sent_to_bottom'})
-    card_hash_to_times_card_sent_to_bottom_and_drawn = ZeroValueDict({'_name': 'card_hash_to_times_card_sent_to_bottom_and_drawn'})
-    card_hash_to_times_card_drawn                    = ZeroValueDict({'_name': 'card_hash_to_times_card_drawn'})
-    card_hash_to_capture                             = {'_name': 'card_hash_to_capture'}
+    card_hash_to_times_card_sent_to_bottom           = ['card_hash_to_times_card_sent_to_bottom', ZeroValueDict()]
+    card_hash_to_times_card_sent_to_bottom_and_drawn = ['card_hash_to_times_card_sent_to_bottom_and_drawn', ZeroValueDict()]
+    card_hash_to_times_card_drawn                    = ['card_hash_to_times_card_drawn', ZeroValueDict()]
+    card_hash_to_capture                             = ['card_hash_to_capture', {}]
 
     while True:
-        REGION_PLAY.wait("play.png")
+        REGION_PLAY.wait(os.path.join(IMAGES_PATH, "play.png"))
         time.sleep(0.5)
         REGION_PLAY.click(LOCATION_PLAY)
 
         time.sleep(0.5)
 
-        REGION_MULLIGAN_KEEP.wait("mulligan_keep.png")
+        REGION_MULLIGAN_KEEP.wait(os.path.join(IMAGES_PATH, "mulligan_keep.png"))
         for i in range(0, 7):
-            REGION_MULLIGAN_KEEP.wait("mulligan_highlighted_keep.png")
+            REGION_MULLIGAN_KEEP.wait(os.path.join(IMAGES_PATH, "mulligan_highlighted_keep.png"))
             time.sleep(1.0)
             REGION_MULLIGAN_KEEP.click(LOCATION_MULLIGAN)
 
-        REGION_TEMPORARY_ZONE.wait("temporary_zone.png")
+        REGION_TEMPORARY_ZONE.wait(os.path.join(IMAGES_PATH, "temporary_zone.png"))
         time.sleep(0.1)
         click(LOCATION_TEMPORARY_ZONE_CARD)
         time.sleep(0.5)
 
         REGION_PUT_ON_THE_BOTTOM_OF_YOUR_LIBRARY.click(LOCATION_PUT_ON_THE_BOTTOM_OF_YOUR_LIBRARY)
 
-        REGION_CHAT_PUT_A_CARD_ON_THE_BOTTOM_OF_THE_LIBRARY.wait("chat_put_a_card_on_the_bottom_of_the_library.png")
+        REGION_CHAT_PUT_A_CARD_ON_THE_BOTTOM_OF_THE_LIBRARY.wait(os.path.join(IMAGES_PATH, "chat_put_a_card_on_the_bottom_of_the_library.png"))
         time.sleep(0.1)
 
         card_sent_to_bottom_capture = capture(REGION_CARD_PREVIEW_CAPTURE)
@@ -106,32 +108,26 @@ def main():
         shutil.move(card_sent_to_bottom_capture, card_sent_to_bottom_capture_dest_path)
         shutil.move(card_drawn_capture, card_drawn_capture_dest_path)
 
-        card_hash_to_times_card_sent_to_bottom[card_sent_to_bottom_hash]           += 1
-        card_hash_to_times_card_sent_to_bottom_and_drawn[card_sent_to_bottom_hash] += 1
-        card_hash_to_times_card_drawn[card_drawn_hash]                             += 1
-        card_hash_to_capture[card_sent_to_bottom_hash] = card_sent_to_bottom_capture_dest_path
-        card_hash_to_capture[card_drawn_hash]          = card_drawn_capture_dest_path
+        card_hash_to_times_card_sent_to_bottom[1][card_sent_to_bottom_hash]           += 1
+        card_hash_to_times_card_sent_to_bottom_and_drawn[1][card_sent_to_bottom_hash] += 1
+        card_hash_to_times_card_drawn[1][card_drawn_hash]                             += 1
+        card_hash_to_capture[1][card_sent_to_bottom_hash] = card_sent_to_bottom_capture_dest_path
+        card_hash_to_capture[1][card_drawn_hash]          = card_drawn_capture_dest_path
 
-        print "hashes of captures of cards that were sent to the bottom and how many times that happened:", card_hash_to_times_card_sent_to_bottom
-        print
-        print "hashes of captures of cards that were drawn after scrying and how many times that happened:", card_hash_to_times_card_drawn
-        print
-        print card_hash_to_capture
-
-        with open(os.path.join(ATTEMPT_NO_PATH, 'stats.json'), 'w') as stats_file:
-            print json.dumps(card_hash_to_times_card_sent_to_bottom_and_drawn[card_sent_to_bottom_hash], stats_file)
-            print
-            print json.dumps(card_hash_to_times_card_sent_to_bottom, stats_file)
-            print
-            print json.dumps(card_hash_to_times_card_drawn, stats_file)
-            print
-            print json.dumps(card_hash_to_capture, stats_file)
-            print
-            print hits, '/', iterations
+        with open(os.path.join(get_number_of_attempts_path(attempts), 'stats.json'), 'w') as stats_file:
+            json.dump(card_hash_to_times_card_sent_to_bottom_and_drawn, stats_file, sort_keys=True, indent=4)
+            stats_file.write('\n')
+            json.dump(card_hash_to_times_card_sent_to_bottom, stats_file, sort_keys=True, indent=4)
+            stats_file.write('\n')
+            json.dump(card_hash_to_times_card_drawn, stats_file, sort_keys=True, indent=4)
+            stats_file.write('\n')
+            json.dump(card_hash_to_capture, stats_file, sort_keys=True, indent=4)
+            stats_file.write('\n')
+            stats_file.write('{0}/{1}'.format(hits, iterations))
 
         click(LOCATION_X_CLOSE)
 
-        REGION_CONCEDE_MATCH_BUTTON.wait("concede_match.png")
+        REGION_CONCEDE_MATCH_BUTTON.wait(os.path.join(IMAGES_PATH, "concede_match.png"))
         time.sleep(0.1)
         type('\n')
 
