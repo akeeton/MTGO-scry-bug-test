@@ -115,6 +115,8 @@ def main():
             print json.dump(card_hash_to_times_card_sent_to_bottom, stats_file)
             print
             print json.dump(card_hash_to_times_card_drawn, stats_file)
+            print
+            print json.dump(card_hash_to_capture, stats_file)
 
         click(LOCATION_X_CLOSE)
 
