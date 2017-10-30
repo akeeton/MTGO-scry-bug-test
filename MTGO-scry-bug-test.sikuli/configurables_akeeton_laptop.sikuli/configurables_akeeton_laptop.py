@@ -1,7 +1,6 @@
 from sikuli import *
 
 import tempfile
-import time
 
 if __name__ == '__main__':
     print "Do not run as __main__!  Intended for import only."
@@ -26,8 +25,6 @@ LOCATION_CONCEDE_MATCH                              = Location(961, 579)
 
 AUTO_WAIT_TIMEOUT_SECONDS                           = 10
 
-TEMP_DIR_PREFIX                                     = time.strftime("MTGO-scry-bug_%Y-%m-%d_%H-%M-%S", time.gmtime())
-TEMP_PATH                                           = tempfile.mkdtemp(prefix=TEMP_DIR_PREFIX)
 HITS_DIR                                            = 'hits'
 MISSES_DIR                                          = 'misses'
 

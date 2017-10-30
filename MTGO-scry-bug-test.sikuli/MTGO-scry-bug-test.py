@@ -1,9 +1,15 @@
+# Make your image, region, and location changes then change the from-import
+# to match.
 from configurables_akeeton_laptop import *
 
 import hashlib
 import json
 import os
 import shutil
+import time
+
+TEMP_DIR_PREFIX = time.strftime("MTGO-scry-bug_%Y-%m-%d_%H-%M-%S", time.gmtime())
+TEMP_PATH       = tempfile.mkdtemp(prefix=TEMP_DIR_PREFIX)
 
 attempts = 0
 
