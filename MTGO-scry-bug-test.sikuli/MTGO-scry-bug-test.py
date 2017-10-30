@@ -1,6 +1,6 @@
 # Make your image, region, and location changes then change the from-import
 # to match.
-from configurables_akeeton_laptop import *
+from configurables_akeeton_desktop import *
 
 import hashlib
 import java.awt.Toolkit
