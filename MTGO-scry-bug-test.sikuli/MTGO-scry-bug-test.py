@@ -3,6 +3,7 @@
 from configurables_akeeton_laptop import *
 
 import hashlib
+import java.awt.Toolkit
 import json
 import os
 import shutil
@@ -130,6 +131,10 @@ if __name__ == '__main__':
         try:
             main()
         except FindFailed as e:
+            for i in range(0, TIMES_TO_BEEP_ON_FIND_FAIlED):
+                java.awt.Toolkit.getDefaultToolkit().beep()
+                time.sleep(1.0)
+
             print e
             with open(os.path.join(get_number_of_attempts_path(attempts), 'error.log'), 'w') as errorlog:
                 errorlog.write(str(e))

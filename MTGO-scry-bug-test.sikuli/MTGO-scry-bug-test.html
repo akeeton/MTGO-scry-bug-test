@@ -70,40 +70,21 @@
 <h2>MTGO-scry-bug-test.sikuli</h2> <a href="MTGO-scry-bug-test.zip">(Download this script)</a>
 </div>
 <pre class="sikuli-code">
+<span class="cmt"># Make your image, region, and location changes then change the from-import</span>
+<span class="cmt"># to match.</span>
 <span class="kw">from</span> configurables_akeeton_laptop <span class="kw">import</span> *
 
 <span class="kw">import</span> hashlib
 <span class="kw">import</span> json
 <span class="kw">import</span> os
 <span class="kw">import</span> shutil
-<span class="kw">import</span> tempfile
 <span class="kw">import</span> time
 
-REGION_PLAY                                         = Region(<span class="dig">7</span>,<span class="dig">965</span>,<span class="dig">334</span>,<span class="dig">57</span>)
-REGION_MULLIGAN_KEEP                                = Region(<span class="dig">0</span>,<span class="dig">13</span>,<span class="dig">175</span>,<span class="dig">154</span>)
-REGION_CARD_SENT_TO_BOTTOM                          = Region(<span class="dig">1209</span>,<span class="dig">283</span>,<span class="dig">102</span>,<span class="dig">63</span>)
-REGION_TEMPORARY_ZONE                               = Region(<span class="dig">1017</span>,<span class="dig">199</span>,<span class="dig">124</span>,<span class="dig">29</span>)
-REGION_PUT_ON_THE_BOTTOM_OF_YOUR_LIBRARY            = Region(<span class="dig">921</span>,<span class="dig">181</span>,<span class="dig">459</span>,<span class="dig">166</span>)
-REGION_CHAT_PUT_A_CARD_ON_THE_BOTTOM_OF_THE_LIBRARY = Region(<span class="dig">1501</span>,<span class="dig">671</span>,<span class="dig">398</span>,<span class="dig">51</span>)
-REGION_CARD_PREVIEW_CAPTURE                         = Region(<span class="dig">1553</span>,<span class="dig">110</span>,<span class="dig">138</span>,<span class="dig">25</span>)
-REGION_CONCEDE_MATCH_BUTTON                         = Region(<span class="dig">891</span>,<span class="dig">554</span>,<span class="dig">133</span>,<span class="dig">48</span>)
+<span class="kw">import</span> java.awt.Toolkit
+java.awt.Toolkit.getDefaultToolkit().beep()
 
-LOCATION_PLAY                                       = Location(<span class="dig">169</span>, <span class="dig">995</span>)
-LOCATION_MULLIGAN                                   = Location(<span class="dig">47</span>, <span class="dig">141</span>)
-LOCATION_TEMPORARY_ZONE_CARD                        = Location(<span class="dig">1195</span>, <span class="dig">382</span>)
-LOCATION_PUT_ON_THE_BOTTOM_OF_YOUR_LIBRARY          = Location(<span class="dig">1118</span>, <span class="dig">430</span>)
-LOCATION_FIRST_CARD_IN_HAND                         = Location(<span class="dig">282</span>, <span class="dig">910</span>)
-LOCATION_X_CLOSE                                    = Location(<span class="dig">1902</span>, <span class="dig">16</span>)
-LOCATION_CONCEDE_MATCH                              = Location(<span class="dig">961</span>, <span class="dig">579</span>)
-
-AUTO_WAIT_TIMEOUT_SECONDS                           = <span class="dig">10</span>
-
-IMAGES_PATH = <span class="str">'C:\\Users\\andre\\Documents\\GitHub\\MTGO-scry-bug-test\\MTGO-scry-bug-test.sikuli\\akeeton_laptop_images\\'</span>
-
-TEMP_DIR_PREFIX   = time.strftime(<span class="str">"MTGO-scry-bug_%Y-%m-%d_%H-%M-%S"</span>, time.gmtime())
-TEMP_PATH         = tempfile.mkdtemp(prefix=TEMP_DIR_PREFIX)
-HITS_DIR          = <span class="str">'hits'</span>
-MISSES_DIR        = <span class="str">'misses'</span>
+TEMP_DIR_PREFIX = time.strftime(<span class="str">"MTGO-scry-bug_%Y-%m-%d_%H-%M-%S"</span>, time.gmtime())
+TEMP_PATH       = tempfile.mkdtemp(prefix=TEMP_DIR_PREFIX)
 
 attempts = <span class="dig">0</span>
 
@@ -133,26 +114,26 @@ attempts = <span class="dig">0</span>
     card_hash_to_capture                             = [<span class="str">'card_hash_to_capture'</span>, {}]
 
     <span class="kw">while</span> True:
-        REGION_PLAY.<span class="skw">wait</span>(os.path.join(IMAGES_PATH, <img src="play.png" />))
+        REGION_PLAY.<span class="skw">wait</span>(<img src="play.png" />)
         time.<span class="skw">sleep</span>(<span class="dig">0.5</span>)
         REGION_PLAY.<span class="skw">click</span>(LOCATION_PLAY)
 
         time.<span class="skw">sleep</span>(<span class="dig">0.5</span>)
 
-        REGION_MULLIGAN_KEEP.<span class="skw">wait</span>(os.path.join(IMAGES_PATH, <img src="mulligan_keep.png" />))
+        REGION_MULLIGAN_KEEP.<span class="skw">wait</span>(<img src="mulligan_keep.png" />)
         <span class="kw">for</span> i <span class="kw">in</span> range(<span class="dig">0</span>, <span class="dig">7</span>):
-            REGION_MULLIGAN_KEEP.<span class="skw">wait</span>(os.path.join(IMAGES_PATH, <img src="mulligan_highlighted_keep.png" />))
+            REGION_MULLIGAN_KEEP.<span class="skw">wait</span>(<img src="mulligan_highlighted_keep.png" />)
             time.<span class="skw">sleep</span>(<span class="dig">1.0</span>)
             REGION_MULLIGAN_KEEP.<span class="skw">click</span>(LOCATION_MULLIGAN)
 
-        REGION_TEMPORARY_ZONE.<span class="skw">wait</span>(os.path.join(IMAGES_PATH, <img src="temporary_zone.png" />))
+        REGION_TEMPORARY_ZONE.<span class="skw">wait</span>(<img src="temporary_zone.png" />)
         time.<span class="skw">sleep</span>(<span class="dig">0.1</span>)
         <span class="skw">click</span>(LOCATION_TEMPORARY_ZONE_CARD)
         time.<span class="skw">sleep</span>(<span class="dig">0.5</span>)
 
         REGION_PUT_ON_THE_BOTTOM_OF_YOUR_LIBRARY.<span class="skw">click</span>(LOCATION_PUT_ON_THE_BOTTOM_OF_YOUR_LIBRARY)
 
-        REGION_CHAT_PUT_A_CARD_ON_THE_BOTTOM_OF_THE_LIBRARY.<span class="skw">wait</span>(os.path.join(IMAGES_PATH, <img src="chat_put_a_card_on_the_bottom_of_the_library.png" />))
+        REGION_CHAT_PUT_A_CARD_ON_THE_BOTTOM_OF_THE_LIBRARY.<span class="skw">wait</span>(<img src="chat_put_a_card_on_the_bottom_of_the_library.png" />)
         time.<span class="skw">sleep</span>(<span class="dig">0.1</span>)
 
         card_sent_to_bottom_capture = <span class="skw">capture</span>(REGION_CARD_PREVIEW_CAPTURE)
@@ -200,7 +181,7 @@ attempts = <span class="dig">0</span>
 
         <span class="skw">click</span>(LOCATION_X_CLOSE)
 
-        REGION_CONCEDE_MATCH_BUTTON.<span class="skw">wait</span>(os.path.join(IMAGES_PATH, <img src="concede_match.png" />))
+        REGION_CONCEDE_MATCH_BUTTON.<span class="skw">wait</span>(<img src="concede_match.png" />)
         time.<span class="skw">sleep</span>(<span class="dig">0.1</span>)
         <span class="skw">type</span>(<span class="str">'\n'</span>)
 

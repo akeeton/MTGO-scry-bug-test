@@ -24,6 +24,7 @@ LOCATION_X_CLOSE                                    = Location(1902, 16)
 LOCATION_CONCEDE_MATCH                              = Location(961, 579)
 
 AUTO_WAIT_TIMEOUT_SECONDS                           = 10
+TIMES_TO_BEEP_ON_FIND_FAIlED                        = 5
 
 HITS_DIR                                            = 'hits'
 MISSES_DIR                                          = 'misses'
