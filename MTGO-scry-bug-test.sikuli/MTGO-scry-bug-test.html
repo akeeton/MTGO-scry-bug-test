@@ -75,13 +75,17 @@
 <span class="kw">from</span> configurables_akeeton_laptop <span class="kw">import</span> *
 
 <span class="kw">import</span> hashlib
+<span class="kw">import</span> java.awt.Toolkit
 <span class="kw">import</span> json
 <span class="kw">import</span> os
 <span class="kw">import</span> shutil
 <span class="kw">import</span> time
 
-<span class="kw">import</span> java.awt.Toolkit
-java.awt.Toolkit.getDefaultToolkit().beep()
+Settings.ActionLogs      = True
+Settings.InfoLogs        = True
+Settings.DebugLogs       = True
+Settings.LogTime         = True
+Settings.AutoWaitTimeout = AUTO_WAIT_TIMEOUT_SECONDS
 
 TEMP_DIR_PREFIX = time.strftime(<span class="str">"MTGO-scry-bug_%Y-%m-%d_%H-%M-%S"</span>, time.gmtime())
 TEMP_PATH       = tempfile.mkdtemp(prefix=TEMP_DIR_PREFIX)
@@ -92,19 +96,20 @@ attempts = <span class="dig">0</span>
     <span class="kw">global</span> attempts
     attempts += <span class="dig">1</span>
 
-    HITS_PATH   = os.path.join(get_number_of_attempts_path(attempts), HITS_DIR)
-    MISSES_PATH = os.path.join(get_number_of_attempts_path(attempts), MISSES_DIR)
+    ATTEMPT_NUM_PATH = get_attempt_number_path(attempts)
+    HITS_PATH        = os.path.join(ATTEMPT_NUM_PATH, HITS_DIR)
+    MISSES_PATH      = os.path.join(ATTEMPT_NUM_PATH, MISSES_DIR)
 
-    <span class="kw">print</span> <span class="str">"TEMP_PATH:"</span>,                             TEMP_PATH
-    <span class="kw">print</span> <span class="str">"get_number_of_attempts_path(attempts):"</span>, get_number_of_attempts_path(attempts)
-    <span class="kw">print</span> <span class="str">"HITS_PATH:"</span>,                             HITS_PATH
-    <span class="kw">print</span> <span class="str">"MISSES_PATH:"</span>,                           MISSES_PATH
+    Debug.setLogFile(os.path.join(ATTEMPT_NUM_PATH, <span class="str">"sikuli.log"</span>))
 
-    os.mkdir(get_number_of_attempts_path(attempts))
+    <span class="kw">print</span> <span class="str">"TEMP_PATH:"</span>,       TEMP_PATH
+    <span class="kw">print</span> <span class="str">"ATTEMPT_NUM_PATH"</span>, ATTEMPT_NUM_PATH
+    <span class="kw">print</span> <span class="str">"HITS_PATH:"</span>,       HITS_PATH
+    <span class="kw">print</span> <span class="str">"MISSES_PATH:"</span>,     MISSES_PATH
+
+    os.mkdir(ATTEMPT_NUM_PATH)
     os.mkdir(HITS_PATH)
     os.mkdir(MISSES_PATH)
-
-    Settings.AutoWaitTimeout = AUTO_WAIT_TIMEOUT_SECONDS
 
     iterations = <span class="dig">0</span>
     hits       = <span class="dig">0</span>
@@ -168,7 +173,7 @@ attempts = <span class="dig">0</span>
         card_hash_to_capture[<span class="dig">1</span>][card_sent_to_bottom_hash] = card_sent_to_bottom_capture_dest_path
         card_hash_to_capture[<span class="dig">1</span>][card_drawn_hash]          = card_drawn_capture_dest_path
 
-        <span class="kw">with</span> open(os.path.join(get_number_of_attempts_path(attempts), <span class="str">'stats.json'</span>), <span class="str">'w'</span>) <span class="kw">as</span> stats_file:
+        <span class="kw">with</span> open(os.path.join(ATTEMPT_NUM_PATH, <span class="str">'stats.json'</span>), <span class="str">'w'</span>) <span class="kw">as</span> stats_file:
             json.dump(card_hash_to_times_card_sent_to_bottom_and_drawn, stats_file, sort_keys=True, indent=<span class="dig">4</span>)
             stats_file.write(<span class="str">'\n'</span>)
             json.dump(card_hash_to_times_card_sent_to_bottom, stats_file, sort_keys=True, indent=<span class="dig">4</span>)
@@ -197,7 +202,7 @@ attempts = <span class="dig">0</span>
 
     <span class="kw">return</span> hasher.hexdigest()
 
-<span class="kw">def</span> get_number_of_attempts_path(attempts):
+<span class="kw">def</span> get_attempt_number_path(attempts):
     <span class="kw">return</span> os.path.join(TEMP_PATH, <span class="str">'attempt_{0}'</span>.format(attempts))
 
 <span class="kw">if</span> __name__ == <span class="str">'__main__'</span>:
@@ -205,8 +210,12 @@ attempts = <span class="dig">0</span>
         <span class="kw">try</span>:
             main()
         <span class="kw">except</span> FindFailed <span class="kw">as</span> e:
+            <span class="kw">for</span> i <span class="kw">in</span> range(<span class="dig">0</span>, TIMES_TO_BEEP_ON_FIND_FAIlED):
+                java.awt.Toolkit.getDefaultToolkit().beep()
+                time.<span class="skw">sleep</span>(<span class="dig">1.0</span>)
+
             <span class="kw">print</span> e
-            <span class="kw">with</span> open(os.path.join(get_number_of_attempts_path(attempts), <span class="str">'error.log'</span>), <span class="str">'w'</span>) <span class="kw">as</span> errorlog:
+            <span class="kw">with</span> open(os.path.join(get_attempt_number_path(attempts), <span class="str">'error.log'</span>), <span class="str">'w'</span>) <span class="kw">as</span> errorlog:
                 errorlog.write(str(e))
             <span class="kw">raise</span> e <span class="cmt"># Replace this with a way to reset MTGO to a starting state so we can try again.</span>
 </pre>

@@ -9,6 +9,12 @@ import os
 import shutil
 import time
 
+Settings.ActionLogs      = True
+Settings.InfoLogs        = True
+Settings.DebugLogs       = True
+Settings.LogTime         = True
+Settings.AutoWaitTimeout = AUTO_WAIT_TIMEOUT_SECONDS
+
 TEMP_DIR_PREFIX = time.strftime("MTGO-scry-bug_%Y-%m-%d_%H-%M-%S", time.gmtime())
 TEMP_PATH       = tempfile.mkdtemp(prefix=TEMP_DIR_PREFIX)
 
@@ -18,19 +24,18 @@ def main():
     global attempts
     attempts += 1
 
-    HITS_PATH   = os.path.join(get_number_of_attempts_path(attempts), HITS_DIR)
-    MISSES_PATH = os.path.join(get_number_of_attempts_path(attempts), MISSES_DIR)
+    ATTEMPT_NUM_PATH = get_attempt_number_path(attempts)
+    HITS_PATH        = os.path.join(ATTEMPT_NUM_PATH, HITS_DIR)
+    MISSES_PATH      = os.path.join(ATTEMPT_NUM_PATH, MISSES_DIR)
 
-    print "TEMP_PATH:",                             TEMP_PATH
-    print "get_number_of_attempts_path(attempts):", get_number_of_attempts_path(attempts)
-    print "HITS_PATH:",                             HITS_PATH
-    print "MISSES_PATH:",                           MISSES_PATH
+    print "TEMP_PATH:",       TEMP_PATH
+    print "ATTEMPT_NUM_PATH", ATTEMPT_NUM_PATH
+    print "HITS_PATH:",       HITS_PATH
+    print "MISSES_PATH:",     MISSES_PATH
 
-    os.mkdir(get_number_of_attempts_path(attempts))
+    os.mkdir(ATTEMPT_NUM_PATH)
     os.mkdir(HITS_PATH)
     os.mkdir(MISSES_PATH)
-
-    Settings.AutoWaitTimeout = AUTO_WAIT_TIMEOUT_SECONDS
 
     iterations = 0
     hits       = 0
@@ -94,7 +99,7 @@ def main():
         card_hash_to_capture[1][card_sent_to_bottom_hash] = card_sent_to_bottom_capture_dest_path
         card_hash_to_capture[1][card_drawn_hash]          = card_drawn_capture_dest_path
 
-        with open(os.path.join(get_number_of_attempts_path(attempts), 'stats.json'), 'w') as stats_file:
+        with open(os.path.join(ATTEMPT_NUM_PATH, 'stats.json'), 'w') as stats_file:
             json.dump(card_hash_to_times_card_sent_to_bottom_and_drawn, stats_file, sort_keys=True, indent=4)
             stats_file.write('\n')
             json.dump(card_hash_to_times_card_sent_to_bottom, stats_file, sort_keys=True, indent=4)
@@ -123,7 +128,7 @@ def hash_file(file_path):
 
     return hasher.hexdigest()
 
-def get_number_of_attempts_path(attempts):
+def get_attempt_number_path(attempts):
     return os.path.join(TEMP_PATH, 'attempt_{0}'.format(attempts))
 
 if __name__ == '__main__':
@@ -136,6 +141,6 @@ if __name__ == '__main__':
                 time.sleep(1.0)
 
             print e
-            with open(os.path.join(get_number_of_attempts_path(attempts), 'error.log'), 'w') as errorlog:
+            with open(os.path.join(get_attempt_number_path(attempts), 'error.log'), 'w') as errorlog:
                 errorlog.write(str(e))
             raise e # Replace this with a way to reset MTGO to a starting state so we can try again.
