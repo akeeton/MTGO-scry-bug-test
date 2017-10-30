@@ -70,6 +70,8 @@
 <h2>MTGO-scry-bug-test.sikuli</h2> <a href="MTGO-scry-bug-test.zip">(Download this script)</a>
 </div>
 <pre class="sikuli-code">
+<span class="kw">from</span> configurables_akeeton_laptop <span class="kw">import</span> *
+
 <span class="kw">import</span> hashlib
 <span class="kw">import</span> json
 <span class="kw">import</span> os
@@ -163,16 +165,18 @@ attempts = <span class="dig">0</span>
         card_sent_to_bottom_hash = hash_file(card_sent_to_bottom_capture)
         card_drawn_hash          = hash_file(card_drawn_capture)
 
-        bottom_and_top_the_same = False
+        card_hash_to_times_card_sent_to_bottom[<span class="dig">1</span>][card_sent_to_bottom_hash]           += <span class="dig">1</span>
+        card_hash_to_times_card_drawn[<span class="dig">1</span>][card_drawn_hash]                             += <span class="dig">1</span>
+
         <span class="kw">if</span> card_sent_to_bottom_hash == card_drawn_hash:
             hits += <span class="dig">1</span>
-            bottom_and_top_the_same = True
+            card_hash_to_times_card_sent_to_bottom_and_drawn[<span class="dig">1</span>][card_sent_to_bottom_hash] += <span class="dig">1</span>
             copy_path = HITS_PATH
         <span class="kw">else</span>:
             copy_path = MISSES_PATH
 
         iterations += <span class="dig">1</span>
-        <span class="kw">print</span> hits, <span class="str">"/"</span>, iterations
+        <span class="kw">print</span> <span class="str">"{0}/{1}"</span>.format(hits, iterations)
 
         card_sent_to_bottom_capture_dest_path = os.path.join(copy_path, str(iterations) + <img src="_bottom.png" />)
         card_drawn_capture_dest_path          = os.path.join(copy_path, str(iterations) + <img src="_drawn.png" />)
@@ -180,9 +184,6 @@ attempts = <span class="dig">0</span>
         shutil.move(card_sent_to_bottom_capture, card_sent_to_bottom_capture_dest_path)
         shutil.move(card_drawn_capture, card_drawn_capture_dest_path)
 
-        card_hash_to_times_card_sent_to_bottom[<span class="dig">1</span>][card_sent_to_bottom_hash]           += <span class="dig">1</span>
-        card_hash_to_times_card_sent_to_bottom_and_drawn[<span class="dig">1</span>][card_sent_to_bottom_hash] += <span class="dig">1</span>
-        card_hash_to_times_card_drawn[<span class="dig">1</span>][card_drawn_hash]                             += <span class="dig">1</span>
         card_hash_to_capture[<span class="dig">1</span>][card_sent_to_bottom_hash] = card_sent_to_bottom_capture_dest_path
         card_hash_to_capture[<span class="dig">1</span>][card_drawn_hash]          = card_drawn_capture_dest_path
 
@@ -226,6 +227,7 @@ attempts = <span class="dig">0</span>
             <span class="kw">print</span> e
             <span class="kw">with</span> open(os.path.join(get_number_of_attempts_path(attempts), <span class="str">'error.log'</span>), <span class="str">'w'</span>) <span class="kw">as</span> errorlog:
                 errorlog.write(str(e))
+            <span class="kw">raise</span> e <span class="cmt"># Replace this with a way to reset MTGO to a starting state so we can try again.</span>
 </pre>
 </body>
 </html>

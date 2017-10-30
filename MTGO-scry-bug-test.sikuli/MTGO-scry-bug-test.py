@@ -1,35 +1,9 @@
+from configurables_akeeton_laptop import *
+
 import hashlib
 import json
 import os
 import shutil
-import tempfile
-import time
-
-REGION_PLAY                                         = Region(7,965,334,57)
-REGION_MULLIGAN_KEEP                                = Region(0,13,175,154)
-REGION_CARD_SENT_TO_BOTTOM                          = Region(1209,283,102,63)
-REGION_TEMPORARY_ZONE                               = Region(1017,199,124,29)
-REGION_PUT_ON_THE_BOTTOM_OF_YOUR_LIBRARY            = Region(921,181,459,166)
-REGION_CHAT_PUT_A_CARD_ON_THE_BOTTOM_OF_THE_LIBRARY = Region(1501,671,398,51)
-REGION_CARD_PREVIEW_CAPTURE                         = Region(1553,110,138,25)
-REGION_CONCEDE_MATCH_BUTTON                         = Region(891,554,133,48)
-
-LOCATION_PLAY                                       = Location(169, 995)
-LOCATION_MULLIGAN                                   = Location(47, 141)
-LOCATION_TEMPORARY_ZONE_CARD                        = Location(1195, 382)
-LOCATION_PUT_ON_THE_BOTTOM_OF_YOUR_LIBRARY          = Location(1118, 430)
-LOCATION_FIRST_CARD_IN_HAND                         = Location(282, 910)
-LOCATION_X_CLOSE                                    = Location(1902, 16)
-LOCATION_CONCEDE_MATCH                              = Location(961, 579)
-
-AUTO_WAIT_TIMEOUT_SECONDS                           = 10
-
-IMAGES_PATH = 'C:\\Users\\andre\\Documents\\GitHub\\MTGO-scry-bug-test\\MTGO-scry-bug-test.sikuli\\akeeton_laptop_images\\'
-
-TEMP_DIR_PREFIX   = time.strftime("MTGO-scry-bug_%Y-%m-%d_%H-%M-%S", time.gmtime())
-TEMP_PATH         = tempfile.mkdtemp(prefix=TEMP_DIR_PREFIX)
-HITS_DIR          = 'hits'
-MISSES_DIR        = 'misses'
 
 attempts = 0
 
@@ -59,26 +33,26 @@ def main():
     card_hash_to_capture                             = ['card_hash_to_capture', {}]
 
     while True:
-        REGION_PLAY.wait(os.path.join(IMAGES_PATH, "play.png"))
+        REGION_PLAY.wait("play.png")
         time.sleep(0.5)
         REGION_PLAY.click(LOCATION_PLAY)
 
         time.sleep(0.5)
 
-        REGION_MULLIGAN_KEEP.wait(os.path.join(IMAGES_PATH, "mulligan_keep.png"))
+        REGION_MULLIGAN_KEEP.wait("mulligan_keep.png")
         for i in range(0, 7):
-            REGION_MULLIGAN_KEEP.wait(os.path.join(IMAGES_PATH, "mulligan_highlighted_keep.png"))
+            REGION_MULLIGAN_KEEP.wait("mulligan_highlighted_keep.png")
             time.sleep(1.0)
             REGION_MULLIGAN_KEEP.click(LOCATION_MULLIGAN)
 
-        REGION_TEMPORARY_ZONE.wait(os.path.join(IMAGES_PATH, "temporary_zone.png"))
+        REGION_TEMPORARY_ZONE.wait("temporary_zone.png")
         time.sleep(0.1)
         click(LOCATION_TEMPORARY_ZONE_CARD)
         time.sleep(0.5)
 
         REGION_PUT_ON_THE_BOTTOM_OF_YOUR_LIBRARY.click(LOCATION_PUT_ON_THE_BOTTOM_OF_YOUR_LIBRARY)
 
-        REGION_CHAT_PUT_A_CARD_ON_THE_BOTTOM_OF_THE_LIBRARY.wait(os.path.join(IMAGES_PATH, "chat_put_a_card_on_the_bottom_of_the_library.png"))
+        REGION_CHAT_PUT_A_CARD_ON_THE_BOTTOM_OF_THE_LIBRARY.wait("chat_put_a_card_on_the_bottom_of_the_library.png")
         time.sleep(0.1)
 
         card_sent_to_bottom_capture = capture(REGION_CARD_PREVIEW_CAPTURE)
@@ -126,7 +100,7 @@ def main():
 
         click(LOCATION_X_CLOSE)
 
-        REGION_CONCEDE_MATCH_BUTTON.wait(os.path.join(IMAGES_PATH, "concede_match.png"))
+        REGION_CONCEDE_MATCH_BUTTON.wait("concede_match.png")
         time.sleep(0.1)
         type('\n')
 
