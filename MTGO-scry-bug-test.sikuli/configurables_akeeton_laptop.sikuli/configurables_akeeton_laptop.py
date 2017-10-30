@@ -8,7 +8,6 @@ if __name__ == '__main__':
 
 REGION_PLAY                                         = Region(7,965,334,57)
 REGION_MULLIGAN_KEEP                                = Region(0,13,175,154)
-REGION_CARD_SENT_TO_BOTTOM                          = Region(1209,283,102,63)
 REGION_TEMPORARY_ZONE                               = Region(1017,199,124,29)
 REGION_PUT_ON_THE_BOTTOM_OF_YOUR_LIBRARY            = Region(921,181,459,166)
 REGION_CHAT_PUT_A_CARD_ON_THE_BOTTOM_OF_THE_LIBRARY = Region(1501,671,398,51)
