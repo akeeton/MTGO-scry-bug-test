@@ -49,20 +49,21 @@ def main():
         time.sleep(0.5)
         REGION_PLAY.click(LOCATION_PLAY)
 
-        time.sleep(0.5)
+        time.sleep(1.0)
 
         REGION_MULLIGAN_KEEP.wait("mulligan_keep.png")
         for i in range(0, 7):
             REGION_MULLIGAN_KEEP.wait("mulligan_highlighted_keep.png")
-            time.sleep(1.0)
+            time.sleep(1.5) # I swear if I have to keep incrementing this value...
             REGION_MULLIGAN_KEEP.click(LOCATION_MULLIGAN)
 
         REGION_TEMPORARY_ZONE.wait("temporary_zone.png")
-        time.sleep(0.1)
+        time.sleep(0.5)
         click(LOCATION_TEMPORARY_ZONE_CARD)
         time.sleep(0.5)
 
         REGION_PUT_ON_THE_BOTTOM_OF_YOUR_LIBRARY.click(LOCATION_PUT_ON_THE_BOTTOM_OF_YOUR_LIBRARY)
+        time.sleep(0.1)
 
         REGION_CHAT_PUT_A_CARD_ON_THE_BOTTOM_OF_THE_LIBRARY.wait("chat_put_a_card_on_the_bottom_of_the_library.png")
         time.sleep(0.1)

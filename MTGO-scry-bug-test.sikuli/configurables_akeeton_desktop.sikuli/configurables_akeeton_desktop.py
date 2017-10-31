@@ -22,7 +22,7 @@ LOCATION_FIRST_CARD_IN_HAND                         = Location(341, 746)
 LOCATION_X_CLOSE                                    = Location(1581, 14)
 LOCATION_CONCEDE_MATCH                              = Location(793, 488)
 
-AUTO_WAIT_TIMEOUT_SECONDS                           = 10
+AUTO_WAIT_TIMEOUT_SECONDS                           = 20
 TIMES_TO_BEEP_ON_FIND_FAIlED                        = 5
 
 HITS_DIR                                            = 'hits'

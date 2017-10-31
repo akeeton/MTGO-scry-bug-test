@@ -72,7 +72,7 @@
 <pre class="sikuli-code">
 <span class="cmt"># Make your image, region, and location changes then change the from-import</span>
 <span class="cmt"># to match.</span>
-<span class="kw">from</span> configurables_akeeton_laptop <span class="kw">import</span> *
+<span class="kw">from</span> configurables_akeeton_desktop <span class="kw">import</span> *
 
 <span class="kw">import</span> hashlib
 <span class="kw">import</span> java.awt.Toolkit
@@ -100,8 +100,6 @@ attempts = <span class="dig">0</span>
     HITS_PATH        = os.path.join(ATTEMPT_NUM_PATH, HITS_DIR)
     MISSES_PATH      = os.path.join(ATTEMPT_NUM_PATH, MISSES_DIR)
 
-    Debug.setLogFile(os.path.join(ATTEMPT_NUM_PATH, <span class="str">"sikuli.log"</span>))
-
     <span class="kw">print</span> <span class="str">"TEMP_PATH:"</span>,       TEMP_PATH
     <span class="kw">print</span> <span class="str">"ATTEMPT_NUM_PATH"</span>, ATTEMPT_NUM_PATH
     <span class="kw">print</span> <span class="str">"HITS_PATH:"</span>,       HITS_PATH
@@ -123,20 +121,21 @@ attempts = <span class="dig">0</span>
         time.<span class="skw">sleep</span>(<span class="dig">0.5</span>)
         REGION_PLAY.<span class="skw">click</span>(LOCATION_PLAY)
 
-        time.<span class="skw">sleep</span>(<span class="dig">0.5</span>)
+        time.<span class="skw">sleep</span>(<span class="dig">1.0</span>)
 
         REGION_MULLIGAN_KEEP.<span class="skw">wait</span>(<img src="mulligan_keep.png" />)
         <span class="kw">for</span> i <span class="kw">in</span> range(<span class="dig">0</span>, <span class="dig">7</span>):
             REGION_MULLIGAN_KEEP.<span class="skw">wait</span>(<img src="mulligan_highlighted_keep.png" />)
-            time.<span class="skw">sleep</span>(<span class="dig">1.0</span>)
+            time.<span class="skw">sleep</span>(<span class="dig">1.5</span>) <span class="cmt"># I swear if I have to keep incrementing this value...</span>
             REGION_MULLIGAN_KEEP.<span class="skw">click</span>(LOCATION_MULLIGAN)
 
         REGION_TEMPORARY_ZONE.<span class="skw">wait</span>(<img src="temporary_zone.png" />)
-        time.<span class="skw">sleep</span>(<span class="dig">0.1</span>)
+        time.<span class="skw">sleep</span>(<span class="dig">0.5</span>)
         <span class="skw">click</span>(LOCATION_TEMPORARY_ZONE_CARD)
         time.<span class="skw">sleep</span>(<span class="dig">0.5</span>)
 
         REGION_PUT_ON_THE_BOTTOM_OF_YOUR_LIBRARY.<span class="skw">click</span>(LOCATION_PUT_ON_THE_BOTTOM_OF_YOUR_LIBRARY)
+        time.<span class="skw">sleep</span>(<span class="dig">0.1</span>)
 
         REGION_CHAT_PUT_A_CARD_ON_THE_BOTTOM_OF_THE_LIBRARY.<span class="skw">wait</span>(<img src="chat_put_a_card_on_the_bottom_of_the_library.png" />)
         time.<span class="skw">sleep</span>(<span class="dig">0.1</span>)
