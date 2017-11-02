@@ -54,9 +54,10 @@ def main():
         REGION_MULLIGAN_KEEP.wait("mulligan_keep.png")
         for i in range(0, 7):
             REGION_MULLIGAN_KEEP.wait("mulligan_highlighted_keep.png")
-            time.sleep(1.5) # I swear if I have to keep incrementing this value...
+            time.sleep(2.0) # I swear if I have to keep incrementing this value...
             REGION_MULLIGAN_KEEP.click(LOCATION_MULLIGAN)
 
+        time.sleep(1.0)
         REGION_TEMPORARY_ZONE.wait("temporary_zone.png")
         time.sleep(0.5)
         click(LOCATION_TEMPORARY_ZONE_CARD)
